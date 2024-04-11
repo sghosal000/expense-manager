@@ -10,6 +10,7 @@ MERN project on Expense Management system
 3. Set monthly or yearly expense and investment goal
 4. Track progress according to goal
 5. Recurring Transactin: user can add weekly, monthly or custom recurring transaction which will be executed after fixed time period.
+6. Add optional notes to transaction
 
 ## Future planning
 1. Notification system for upcoming recurring transaction, and budget planning report
