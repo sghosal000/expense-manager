@@ -8,7 +8,11 @@ const budgetSchema = new mongoose.Schema({
     },
     amount: {
         type: Number,
-        required: true
+        required: true,
+        validate: {
+            validator: (amount) => amount > 0,
+            message: "amount should be positive decimal value."
+        }
     },
     type: {
         type: String,
@@ -21,12 +25,20 @@ const budgetSchema = new mongoose.Schema({
     },
     endDate: {
         type: Date,
-        get: function () {
-            const month = this.startDate.getMonth();
-            const year = this.startDate.getFullYear();
-            const lastDay = new Date(year, month + 1, 0); // Get last day of the month
-            return lastDay;
-        }
+        required: true
+        // get: function () {
+        //     const month = this.startDate.getMonth();
+        //     const year = this.startDate.getFullYear();
+        //     const lastDay = new Date(year, month + 1, 0); // Get last day of the month
+        //     return lastDay;
+        // }
+    }
+},
+{
+    timestamps: true,
+    index: {
+        userid: 1,
+        type: 1
     }
 })
 

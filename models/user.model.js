@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema({
     maritalstatus: {
         type: Boolean
     }
-
 },
 {
     timestamps: true

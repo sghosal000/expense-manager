@@ -1,4 +1,4 @@
-const mongoose = reequire('mongoose')
+const mongoose = require('mongoose')
 
 async function dbConnect(){
     const connectionString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`

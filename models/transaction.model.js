@@ -9,6 +9,10 @@ const transactionSchema = new mongoose.Schema({
     amount: {
         type: Number,
         required: true,
+        validate: {
+            validator: (amount) => amount > 0,
+            message: "amount should be positive decimal value."
+        }
     },
     date: {
         type: Date,
@@ -30,6 +34,13 @@ const transactionSchema = new mongoose.Schema({
     recurringid: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'recurringTransaction',
+    }
+},
+{
+    timestamps: true,
+    index: {
+        userid: 1,
+        type: 1
     }
 })
 
