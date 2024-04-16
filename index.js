@@ -7,7 +7,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-app.use('/', userRouter)
+app.use('/user', userRouter)
 
 dbConnect()
 app.listen(5000, () => console.log("Listening on http://localhost:5000"))
