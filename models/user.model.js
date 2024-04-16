@@ -27,10 +27,16 @@ const userSchema = new mongoose.Schema({
     },
     maritalstatus: {
         type: Boolean
+    },
+    role: {
+        type: String,
+        enum: ['admin', 'normal'],
+        default: 'normal'
     }
 },
 {
-    timestamps: true
+    timestamps: true,
+    index: { role: 1 }
 })
 
 module.exports = mongoose.model("user", userSchema)

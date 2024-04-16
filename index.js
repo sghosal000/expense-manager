@@ -1,10 +1,13 @@
 const express = require("express")
-require("./db/db.config")
+const dbConnect = require("./db/db.config")
+const userRouter = require("./routes/user.routes")
 
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+app.use('/', userRouter)
+
 dbConnect()
-app.listen(5000, () => console.l0g("Listening on http://localhost:5000"))
+app.listen(5000, () => console.log("Listening on http://localhost:5000"))
