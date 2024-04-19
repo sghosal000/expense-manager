@@ -13,7 +13,8 @@ const userCategorySchema = new mongoose.Schema({
     }
 },
 {
-    timestamps: true
+    timestamps: true,
+    index: { userid: 1 }
 })
 
 module.exports = mongoose.model("userCategory", userCategorySchema)

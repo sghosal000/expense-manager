@@ -10,10 +10,14 @@ const categorySchema = new mongoose.Schema({
         type: String,
         enum: ["income", "expense", "investment"],
         required: true
+    },
+    iscommon: {
+        type: Boolean,
+        default: false
     }
 },
 {
     timestamps: true
 })
 
-module.exports = mongoose.model("category", categorySchema)
+module.exports = mongoose.model("Category", categorySchema)

@@ -14,10 +14,6 @@ const transactionSchema = new mongoose.Schema({
             message: "amount should be positive decimal value."
         }
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
     note: {
         type: String,
     },
@@ -44,4 +40,4 @@ const transactionSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("transaction", transactionSchema)
+module.exports = mongoose.model("Transaction", transactionSchema)

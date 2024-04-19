@@ -1,10 +1,10 @@
 require('dotenv').config()
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const user = require("../models/user.model")
+const User = require("../models/user.model")
 const verifyRole = require("../middlewares/verifyRole.middleware")
 
-const accessTokenExpire = '5m'
+const accessTokenExpire = '15m'
 const refreshTokenExpire = '7d'
 
 const signup = async (req, res) => {
@@ -21,18 +21,18 @@ const signup = async (req, res) => {
             return res.status(400).json({ message: "Missing required fields" })
         }
         
-        const existingUname = await user.findOne({ username })
+        const existingUname = await User.findOne({ username })
         if (existingUname) {
-            return res.status(400).jsom({ message: "username already exists" })
+            return res.status(400).json({ message: "username already exists" })
         }
-        const existingEmail = await user.findOne({ email })
+        const existingEmail = await User.findOne({ email })
         if (existingEmail) {
-            return res.status(400).jsom({ message: "email already exists" })
+            return res.status(400).json({ message: "email already exists" })
         }
 
         const hashedPassword = await bcrypt.hash(password, Number(process.env.BCRYPT_ROUNDS))
 
-        const newUser = new user({
+        const newUser = new User({
             username,
             email,
             password: hashedPassword,
@@ -65,7 +65,7 @@ const login = async (req, res) => {
             return res.status(400).json({ message: "Missing required fields" })
         }
 
-        const foundUser = await user.findOne({$or: [{username: id}, {email: id}]})
+        const foundUser = await User.findOne({$or: [{username: id}, {email: id}]})
         if(!foundUser){
             return res.status(401).json({ message: "Invalid login credentials" })
         }
@@ -98,6 +98,7 @@ const login = async (req, res) => {
 }
 
 // note: refreshtoken won't invalidate previous acess token. check it later
+// note: if user hash not refreshed for more than accesstoken timeout use logic in frontend to refreshtoken and get a new key if refreshtoken not timed out. otherwise user will have to login again and new refreshkey will be generated
 const refreshToken = async (req, res) => {
     try {
         const refreshToken = req.cookies.refreshToken
@@ -115,7 +116,7 @@ const refreshToken = async (req, res) => {
                 return res.status(403).json({ message: "Forbidden" })
             }
             
-            const foundUser = await user.findById(decoded.userid)
+            const foundUser = await User.findById(decoded.userid)
             if (!foundUser) {
                 return res.status(401).json({ message: "Invalid refresh token, user not found" });
             }

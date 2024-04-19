@@ -1,11 +1,11 @@
 require('dotenv').config()
-const user = require("../models/user.model")
+const User = require("../models/user.model")
 const verifyRole = require("../middlewares/verifyRole.middleware")
 
 const getAllUsers = async (req, res) => {
     try {
         verifyRole('admin')(req, res, async () => {
-            const users = await user.find().select('-password')
+            const users = await User.find().select('-password')
             res.status(200).json({ users });
         })
     } catch (error) {
@@ -19,7 +19,7 @@ const getUserbyUsername = async (req, res) => {
         verifyRole('admin')(req, res, async () => {
             const { username } = req.params
             console.log(username);
-            const foundUser = await user.find({ username: username }).select('-password')
+            const foundUser = await User.find({ username: username }).select('-password')
 
             if(foundUser.length > 0) res.status(200).json({ foundUser })
             else res.status(404).json({ message: "no user found"})
