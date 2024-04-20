@@ -45,6 +45,10 @@ const createTransaction = async (req, res) => {
         res.status(201).json({ message: "transaction created successfully" })
     } catch (error) {
         console.error(error);
+        if(error.name === "ValidationError"){
+            const { message } = error.errors.type
+            return res.status(401).json({ message })
+        }
         res.status(500).json({ message: "Internal server error" });
     }
 }
@@ -78,13 +82,46 @@ const getAllTransactionByUsername = async (req, res) => {
     try {
         const { username } = req.params
         console.log(username)
-        const foundUser = await User.findOne({ username: username }).select('-password')
+        const foundUser = await User.findOne({ username: username }).select('_id')
         if(!foundUser){
-            return res.status(400).json({ message: "User not found" });
+            return res.status(404).json({ message: "User not found" });
         }
 
         const transactions = await Transaction.find({ userid: foundUser._id })
-        res.status(200).json({ transactions })
+        res.status(200).json( transactions )
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+const deleteTransactionById = async (req, res) => {
+    try {
+        const userid = req.user.userid
+        const { id } = req.params
+        console.log(id)
+        
+        const transaction = await Transaction.findOneAndDelete({ _id: id, userid })
+        if(!transaction){
+            return res.status(404).json({ message: "no transaction found" })
+        }
+        res.status(200).json( { message: "Successfully delted.", transaction })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+const deleteTransactionByIdAdmin = async (req, res) => {
+    try {
+        const { id } = req.params
+        console.log(id)
+        
+        const transaction = await Transaction.findOneAndDelete({ _id: id })
+        if(!transaction){
+            return res.status(404).json({ message: "no record found" })
+        }
+        res.status(200).json( { message: "Successfully delted.", transaction })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
@@ -95,5 +132,7 @@ module.exports = {
     createTransaction,
     getTransactions,
     getAllTransactions,
-    getAllTransactionByUsername
+    getAllTransactionByUsername,
+    deleteTransactionById,
+    deleteTransactionByIdAdmin
 }
