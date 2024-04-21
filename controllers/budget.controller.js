@@ -12,6 +12,11 @@ const createBudget = async (req, res) =>{
             return res.status(400).json({ message: "missing required fields" })
         }
 
+        const existingBudget = await Budget.findOne({ userid, type })
+        if(existingBudget){
+            return res.status(409).json({ message: "only one budget per category is allowed, delete previous budget first"})
+        }
+
         const budgetStartDate = new Date()
         const budgetEndDate = endDate? new Date(endDate): new Date(budgetStartDate.getFullYear(), budgetStartDate.getMonth()+1, 0)
 
@@ -50,7 +55,11 @@ const getBudgets = async (req, res) => {
         if(budgets.length === 0){
             return res.status(404).json({ message: "no Budget found" });
         }
-        res.status(200).json( budgets )
+
+        const formattedBudgets = budgets.map((budget) => {
+            return { ...budget._doc, isActive: budget.endDate >= new Date() }
+        })
+        res.status(200).json( formattedBudgets )
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
@@ -63,7 +72,11 @@ const getAllBudgets = async (req, res) => {
         if(budgets.length === 0){
             return res.status(404).json({ message: "no Budget found" });
         }
-        res.status(200).json( budgets )
+
+        const formattedBudgets = budgets.map((budget) => {
+            return { ...budget._doc, isActive: budget.endDate >= new Date() }
+        })
+        res.status(200).json( formattedBudgets )
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
@@ -80,7 +93,10 @@ const getAllBudgetsByUsername = async (req, res) => {
         }
 
         const budgets = await Budget.find({ userid: foundUser._id })
-        res.status(200).json( budgets )
+        const formattedBudgets = budgets.map((budget) => {
+            return { ...budget._doc, isActive: budget.endDate >= new Date() }
+        })
+        res.status(200).json( formattedBudgets )
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
