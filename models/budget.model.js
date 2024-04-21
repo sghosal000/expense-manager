@@ -21,17 +21,17 @@ const budgetSchema = new mongoose.Schema({
     },
     startDate: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
     endDate: {
         type: Date,
-        required: true
-        // get: function () {
-        //     const month = this.startDate.getMonth();
-        //     const year = this.startDate.getFullYear();
-        //     const lastDay = new Date(year, month + 1, 0); // Get last day of the month
-        //     return lastDay;
-        // }
+        required: true,
+        validate: {
+            validator: function(date) {
+                return this.startDate < date
+            },
+            message: "endDate should be greater than startDate"
+        }
     }
 },
 {

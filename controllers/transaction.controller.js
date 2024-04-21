@@ -46,8 +46,7 @@ const createTransaction = async (req, res) => {
     } catch (error) {
         console.error(error);
         if(error.name === "ValidationError"){
-            const { message } = error.errors.type
-            return res.status(401).json({ message })
+            return res.status(401).json({ message: "validation error" })
         }
         res.status(500).json({ message: "Internal server error" });
     }
