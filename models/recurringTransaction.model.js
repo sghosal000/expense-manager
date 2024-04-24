@@ -19,23 +19,31 @@ const recurringTransactionSchema = new mongoose.Schema({
         enum: ['income', 'expense', 'investment'],
         required: true
     },
-    categoryId: {  // reference to category by id, not a separate object
+    categoryid: {  // reference to category by id, not a separate object
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         required: true
     },
     startDate: {
         type: Date,
-        required: true
+        required: true,
+        validate: {
+            validator: (date) => date >= new Date(),
+            message: "starting date cannot be before today"
+        }
     },
     frequency: {
         interval: {
             type: Number,
-            required: true
+            required: true,
+            validate: {
+                validator: (amount) => amount > 0,
+                message: "amount should be positive decimal value."
+            }
         },
         unit: {
             type: String,
-            enum: ['days', 'weeks', 'months', 'years'],
+            enum: ['day', 'week', 'month', 'year'],
             required: true
         }
     },

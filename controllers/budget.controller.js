@@ -24,7 +24,6 @@ const createBudget = async (req, res) =>{
             return res.status(400).json({ message: "end date should be less than one year"})
         }
 
-        console.log(budgetStartDate<budgetEndDate);
         const newBudget = new Budget({
             userid,
             amount,
@@ -111,7 +110,7 @@ const deleteBudgetById = async (req, res) => {
         
         const budget = await Budget.findOneAndDelete({ _id: id, userid })
         if(!budget){
-            return res.status(404).json({ message: "no transaction found" })
+            return res.status(404).json({ message: "no budget found" })
         }
         res.status(200).json( { message: "Successfully delted.", budget })
     } catch (error) {
@@ -127,7 +126,7 @@ const deleteBudgetByIdAdmin = async (req, res) => {
         
         const budget = await Budget.findOneAndDelete({ _id: id })
         if(!budget){
-            return res.status(404).json({ message: "no record found" })
+            return res.status(404).json({ message: "no budget found" })
         }
         res.status(200).json( { message: "Successfully delted.", budget })
     } catch (error) {
