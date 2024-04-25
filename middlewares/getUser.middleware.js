@@ -10,7 +10,7 @@ const getUser = async (req, res, next) => {
         }
 
         if (!process.env.JWT_SECRET_KEY) {
-            return res.status(500).json({ message: "Missing JWT secret key in environment variables" });
+            return res.status(500).json({ message: "Missing JWT secret key" });
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)

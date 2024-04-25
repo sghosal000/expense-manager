@@ -4,7 +4,7 @@ const verifyRole = require("../middlewares/verifyRole.middleware")
 
 const getAllUsers = async (req, res) => {
     try {
-        verifyRole('admin')(req, res, async () => {
+        verifyRole(['admin'])(req, res, async () => {
             const users = await User.find().select('-password')
             res.status(200).json({ users });
         })
@@ -16,7 +16,7 @@ const getAllUsers = async (req, res) => {
 
 const getUserbyUsername = async (req, res) => {
     try {
-        verifyRole('admin')(req, res, async () => {
+        verifyRole(['admin'])(req, res, async () => {
             const { username } = req.params
             console.log(username);
             const foundUser = await User.find({ username: username }).select('-password')
@@ -37,7 +37,7 @@ const getUserbyUsername = async (req, res) => {
 
 const getUserbyId = async (req, res) => {
     try {
-        verifyRole('admin')(req, res, async () => {
+        verifyRole(['admin'])(req, res, async () => {
             const { id } = req.params
             console.log(id);
             const foundUser = await User.find({ _id: id }).select('-password')

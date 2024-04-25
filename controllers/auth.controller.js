@@ -4,8 +4,8 @@ const jwt = require("jsonwebtoken")
 const User = require("../models/user.model")
 const verifyRole = require("../middlewares/verifyRole.middleware")
 
-const accessTokenExpire = '15m'
-const refreshTokenExpire = '7d'
+const accessTokenExpire = process.env.ACCESS_TOKEN_EXPIRE
+const refreshTokenExpire = process.env.REFRESH_TOKEN_EXPIRE
 
 const signup = async (req, res) => {
     try {
@@ -47,7 +47,7 @@ const signup = async (req, res) => {
         const payload = { userid: newUser._id, role: 'normal' }
         const secretkey = process.env.JWT_SECRET_KEY
         if (!secretkey) {
-            return res.status(500).json({ message: "Missing JWT secret key in environment variables" });
+            return res.status(500).json({ message: "Missing JWT secret key" });
         }
         const token = jwt.sign(payload, secretkey, { expiresIn: '5m' })
         
@@ -76,12 +76,12 @@ const login = async (req, res) => {
         }
 
         const payload = { userid: foundUser._id, role: foundUser.role }
-        const accessSecretKey = foundUser.role === 'admin'? process.env.JWT_SECRET_KEY_ADMIN: process.env.JWT_SECRET_KEY
-        if (!accessSecretKey) return res.status(500).json({ message: "Missing JWT secret key in environment" });
+        const accessSecretKey = process.env.JWT_SECRET_KEY
+        if (!accessSecretKey) return res.status(500).json({ message: "Missing JWT secret key" });
         const accessToken = jwt.sign(payload, accessSecretKey, { expiresIn: accessTokenExpire })
         
         const refreshSecretKey = process.env.JWT_REFRESH_SECRET_KEY
-        if (!refreshSecretKey) return res.status(500).json({ message: "Missing JWT refresh secret key in environment" });
+        if (!refreshSecretKey) return res.status(500).json({ message: "Missing JWT refresh secret key" });
         const refreshToken = jwt.sign(payload, refreshSecretKey, { expiresIn: refreshTokenExpire })
 
         res.cookie("refreshToken", refreshToken, {
@@ -101,9 +101,9 @@ const login = async (req, res) => {
 // note: if user hash not refreshed for more than accesstoken timeout use logic in frontend to refreshtoken and get a new key if refreshtoken not timed out. otherwise user will have to login again and new refreshkey will be generated
 const refreshToken = async (req, res) => {
     try {
-        const refreshToken = req.cookies.refreshToken
+        const refreshToken = req.cookies?.refreshToken
         if(!refreshToken) return res.status(401).json({ message: "no refresh token found" })
-        
+
         const refreshSecretKey = process.env.JWT_REFRESH_SECRET_KEY
         jwt.verify(refreshToken, refreshSecretKey, async (error, decoded) => {
             if (error) {
@@ -122,8 +122,8 @@ const refreshToken = async (req, res) => {
             }
 
             const payload = { userid: foundUser._id, role: foundUser.role }
-            const accessSecretKey = foundUser.role === 'admin'? process.env.JWT_SECRET_KEY_ADMIN: process.env.JWT_SECRET_KEY
-            if (!accessSecretKey) return res.status(500).json({ message: "Missing JWT secret key in environment" });
+            const accessSecretKey = process.env.JWT_SECRET_KEY
+            if (!accessSecretKey) return res.status(500).json({ message: "Missing JWT secret key" });
             const newAccessToken = jwt.sign(payload, accessSecretKey, { expiresIn: accessTokenExpire })
 
             res.status(200).json({ message: "access key refreshed", newAccessToken })

@@ -6,20 +6,27 @@ const createScheduledTransaction = async () => {
         const dueTransactions = await RecurringTransaction.find({ nextExecutionDate: { $lte: new Date() } })
 
         dueTransactions.forEach(async dueTransaction => {
-            const { _id, userid, amount, type, categoryid, frequency, note } = dueTransaction
-            const newTransaction = new Transaction({
-                userid,
-                amount,
-                note,
-                type,
-                categoryid,
-                recurringid: _id
-            })
-            await newTransaction.save()
+            try {
+                const { _id, userid, amount, type, categoryid, frequency, note } = dueTransaction
+                const newTransaction = new Transaction({
+                    userid,
+                    amount,
+                    note,
+                    type,
+                    categoryid,
+                    recurringid: _id
+                })
+                await newTransaction.save()
+                console.log(`New transaction created for recurring Transaction id: ${_id}`);
+                
+                const nextExecutionDate = calculateNextExecutionDate(new Date(), frequency)
+                dueTransaction.nextExecutionDate = nextExecutionDate
+                await dueTransaction.save()
+                console.log(`Next execution date updated for recurring Transaction id: ${_id}`);
+            } catch (error) {
+                console.error(`Error creating transaction. Transaction id: ${_id}`, error)
+            }
 
-            const nextExecutionDate = calculateNextExecutionDate(new Date(), frequency)
-            dueTransaction.nextExecutionDate = nextExecutionDate
-            await dueTransaction.save()
         })
     } catch (error) {
         console.error("Error creating transaction from recurring:", error.message)

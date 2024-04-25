@@ -1,7 +1,7 @@
 const RecurringTransaction = require("../models/recurringTransaction.model")
 const Category = require("../models/category.model")
 const User = require("../models/user.model")
-const { calculateNextExecutionDate } = require("../utils/addScheduledTransaction")
+const { calculateNextExecutionDate } = require("../utils/addScheduledTransaction.utils")
 
 const createRecurringTransaction = async (req, res) => {
     try {
