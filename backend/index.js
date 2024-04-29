@@ -31,6 +31,7 @@ try {
     setTimeout(() => {
         cron.schedule('0 0 * * *', createScheduledTransaction, {
             scheduled: true,
+            timezone: 'Asia/Kolkata'
         });
     }, 1000)
 } catch (error) {

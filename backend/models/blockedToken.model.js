@@ -18,7 +18,7 @@ const BlockedAccessToken = BlockedToken.discriminator("BlockedAscessToken", new 
         expires: '3h'
     }
 }, options))
-const BlockedRefreshToken = BlockedToken.discriminator("BlockedAscessToken", new mongoose.Schema({
+const BlockedRefreshToken = BlockedToken.discriminator("BlockedRefreshToken", new mongoose.Schema({
     expiresAt: {
         type: Date,
         required: true,

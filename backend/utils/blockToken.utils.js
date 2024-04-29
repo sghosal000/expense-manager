@@ -1,6 +1,6 @@
 const { BlockedAccessToken, BlockedRefreshToken } = require("../models/blockedToken.model");
 
-async function blockAccessToken(tokenId) {
+const blockAccessToken = async (tokenId) => {
     try {
         const blockedToken = new BlockedAccessToken({ tokenId });
         await blockedToken.save();
@@ -10,7 +10,7 @@ async function blockAccessToken(tokenId) {
     }
 }
 
-async function blockRefreshToken(tokenId) {
+const blockRefreshToken = async (tokenId) => {
     try {
         const blockedToken = new BlockedRefreshToken({ tokenId });
         await blockedToken.save();
@@ -20,4 +20,21 @@ async function blockRefreshToken(tokenId) {
     }
 }
 
-module.exports = { blockAccessToken, blockRefreshToken };
+const isBlacklisted = async (token) => {
+    try {
+        const blockedToken = await BlockedToken.findOne({ tokenId: token })
+        if (blockedToken) {
+            return new Error("tokenBlockedError")
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error' })
+        if(error.name === "tokenBlockedError") throw (error)
+    }
+}
+
+module.exports = {
+    blockAccessToken,
+    blockRefreshToken,
+    isBlacklisted
+}

@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken")
 require('dotenv').config()
 
+const { isBlacklisted } = require("../utils/blockToken.utils")
+
 const getUser = async (req, res, next) => {
     try {
         const token = req.headers.authorization?.split(' ')[1]
@@ -12,6 +14,8 @@ const getUser = async (req, res, next) => {
         if (!process.env.JWT_SECRET_KEY) {
             return res.status(500).json({ message: "Missing JWT secret key" });
         }
+
+        // isBlacklisted(token)
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
         req.user = { userid: decoded.userid }
