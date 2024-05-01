@@ -15,7 +15,7 @@ const Login = () => {
             const { status } = await authService.login(username, password)
             if (status) {
                 setMessage("Login successful")
-                navigate("/dash")
+                navigate("/Dashboard")
             } else {
                 setMessage("Invalid username or password");
             }
@@ -26,28 +26,29 @@ const Login = () => {
     }
 
     return (
-        <div className="flex h-screen">
+        <div className="flex h-screen bg-background text-txt">
             <div className="w-1/2 flex flex-col items-center justify-center px-16 ">
                 <form className="flex justify-center items-center h-screen w-full" onSubmit={handleSubmit}>
-                    <div className="bg-white shadow-xl rounded-lg px-8 py-6 w-full max-w-md">
+                    <div className="bg-base border-neutral shadow-xl rounded-lg px-8 py-6 w-full max-w-md">
                         <h1 className="text-xl font-bold mb-4 text-center">Login</h1>
                         <p>{message}</p>
                         <div className="space-y-4">
                             <div className="flex flex-col">
-                                <label htmlFor="username" className="text-sm font-medium mb-2">
+                                <label htmlFor="username" className="text-sm font-medium text-txt-depressed mb-2">
                                     Username
                                 </label>
                                 <input
                                     type="text"
                                     id="username"
                                     value={username}
+                                    placeholder="Username or email"
                                     onChange={(e) => setUsername(e.target.value)}
-                                    className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
+                                    className="bg-slate-500 border border-neutral rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
                                     required
                                 />
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="password" className="text-sm font-medium mb-2">
+                                <label htmlFor="password" className="text-sm font-medium text-txt-depressed mb-2">
                                     Password
                                 </label>
                                 <input
@@ -55,13 +56,13 @@ const Login = () => {
                                     id="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
+                                    className="bg-slate-500 border border-neutral rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
                                     required
                                 />
                             </div>
                             <button
                                 type="submit"
-                                className="bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md py-2 px-4 focus:outline-none"
+                                className="bg-accent hover:bg-blue-600 font-medium rounded-md py-2 px-4 focus:outline-none"
                             >
                                 Login
                             </button>

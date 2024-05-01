@@ -7,8 +7,9 @@ export default function PrivateRoute({ children }) {
     if(!Loggedin){
         return <Navigate to="/login" replace />
     }
+    return children
 
-    const user = useOutletContext
+    // const user = useOutletContext
 
-    return children ? children({ user }) : children
+    // return children ? children({ user }) : children
 }

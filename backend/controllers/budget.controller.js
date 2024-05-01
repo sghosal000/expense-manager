@@ -102,6 +102,49 @@ const getAllBudgetsByUsername = async (req, res) => {
     }
 }
 
+const expBudgetStatus = async (req, res) => {
+    try {
+        const userid = req.user.userid
+        if (!userid) {
+            return res.status(401).json({ message: 'Unauthorized' })
+        }
+
+        const budget = await Budget.findOne({ userid: userid, type: "expense" })
+        const { startDate, endDate } = budget
+        const expenseSum = await Transaction.aggregate([
+            {
+                $match: {
+                    $and: [
+                        // bhai yaad rakhna ye, $match takes only one argumentand convert string to object id
+                        { userid: new mongoose.Types.ObjectId(String(userid)) },
+                        { type: 'expense' },
+                        {
+                            createdAt: { $gte: startDate, $lte: endDate }
+                        }
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalAmount: { $sum: "$amount" },
+
+                }
+            }
+        ])
+        const totalSpent = expenseSum.length > 0 ? expenseSum[0].totalAmount : 0
+
+        // const exps = await Transaction.find({ userid, type: 'expense', createdAt: { $gte: startDate, $lte: endDate } })
+        // console.log(exps);
+        // console.log({startDate, endDate});
+        console.log(totalSpent);
+        res.status(200).json({ totalSpent , goal: budget.amount })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 const deleteBudgetById = async (req, res) => {
     try {
         const userid = req.user.userid

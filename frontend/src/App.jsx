@@ -2,9 +2,11 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import PrivateRoute from './components/PrivateContent'
+import Layout from './layouts/Layout'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import Dashboard from './pages/Dashboard'
 
 function App() {
 	const router = createBrowserRouter([
@@ -17,6 +19,7 @@ function App() {
 				{ path: "/signup", element: <Signup /> },
 				{ 
 					path: "/dashboard",
+					// element: <PrivateRoute children={<Dashboard />} /> // this also works fine
 					element: (
 						<PrivateRoute>
 							<Dashboard />

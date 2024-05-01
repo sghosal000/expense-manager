@@ -7,11 +7,13 @@ const transactionRouter = require("./routes/transaction.routes")
 const recurringTransaction = require("./routes/recurringTransaction.routes")
 const budgetRouter = require("./routes/budget.routes")
 
+const cors = require('cors')
 const cron = require("node-cron")
 const { createScheduledTransaction } = require("./utils/addScheduledTransaction.utils")
 
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookies())
