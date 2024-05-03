@@ -67,33 +67,6 @@ const getTransactions = async (req, res) => {
     }
 }
 
-const getAllTransactions = async (req, res) => {
-    try {
-        const transactions = await Transaction.find()
-        res.status(200).json({ transactions })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
-const getAllTransactionByUsername = async (req, res) => {
-    try {
-        const { username } = req.params
-        console.log(username)
-        const foundUser = await User.findOne({ username: username }).select('_id')
-        if(!foundUser){
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        const transactions = await Transaction.find({ userid: foundUser._id })
-        res.status(200).json( transactions )
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
 const deleteTransactionById = async (req, res) => {
     try {
         const userid = req.user.userid
@@ -111,27 +84,8 @@ const deleteTransactionById = async (req, res) => {
     }
 }
 
-const deleteTransactionByIdAdmin = async (req, res) => {
-    try {
-        const { id } = req.params
-        console.log(id)
-        
-        const transaction = await Transaction.findOneAndDelete({ _id: id })
-        if(!transaction){
-            return res.status(404).json({ message: "no record found" })
-        }
-        res.status(200).json( { message: "Successfully delted.", transaction })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
 module.exports = {
     createTransaction,
     getTransactions,
-    getAllTransactions,
-    getAllTransactionByUsername,
     deleteTransactionById,
-    deleteTransactionByIdAdmin
 }

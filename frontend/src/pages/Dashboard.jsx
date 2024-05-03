@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TabNavigation from '../components/TabNavigation';
 import DashboardTab from '../components/tabs/DashboardTab';
 import TransactionsTab from '../components/tabs/TransactionsTab';
 import BudgetTab from '../components/tabs/BudgetTab';
@@ -6,7 +7,7 @@ import RecurringTab from '../components/tabs/RecurringTab';
 
 
 const Dashboard = () => {
-    const [activeTab, setActiveTab] = useState('Dashboard');
+    const [activeTab, setActiveTab] = useState('Dashboard')
 
     const tabs = [
         { name: 'Dashboard', link: '#' },
@@ -37,25 +38,9 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="flex flex-col items-center w-full min-h-screen bg-background text-txt">
-            <nav className="fixed top-20 bg-base w-2/3 border border-neutral rounded-full shadow-lg px-2">
-                <ul className="flex my-auto justify-between text-lg text-center">
-                    {tabs.map((tab) => (
-                        <li
-                            key={tab.name}
-                            className={`relative w-1/6 my-3 content-center cursor-pointer transition-all
-                                ${activeTab === tab.name ? "my-1 py-2 rounded-full font-bold text-lg shadow-lg bg-slate-600 text-sky-300" : "hover:text-txt-depressed"}
-                                ${tab.name !== tabs[0].name && tab.name !== tabs[tabs.length - 1].name ? "border-x border-neutral" : ""} `}
-                            onClick={() => setActiveTab(tab.name)}
-                        >
-                            {tab.name}
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-            <div className="mt-40">
-                {render(activeTab)}
-            </div>
+        <div className="flex flex-col items-center gap-y-2 background text-txt">
+            <TabNavigation tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+            {render(activeTab)}
         </div>
     )
 }

@@ -82,38 +82,6 @@ const getRecurringTransactions = async (req, res) => {
     }
 }
 
-const getAllRecurringTransactions = async (req, res) => {
-    try {
-        const recurringTransactions = await RecurringTransaction.find()
-        if(recurringTransactions.length === 0){
-            return res.status(404).json({ message: "no Recurring Transaction found" });
-        }
-
-        res.status(200).json( recurringTransactions )
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
-const getAllRecurringTransactionsByUsername = async (req, res) => {
-    try {
-        const { username } = req.params
-        console.log(username)
-        const foundUser = await User.findOne({ username: username }).select('_id')
-        if(!foundUser){
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        const recurringTransactions = await RecurringTransaction.find({ userid: foundUser._id })
-
-        res.status(200).json( recurringTransactions )
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
 const deleteRecurringTransactionById = async (req, res) => {
     try {
         const userid = req.user.userid
@@ -131,26 +99,8 @@ const deleteRecurringTransactionById = async (req, res) => {
     }
 }
 
-const deleteRecurringTransactionByIdAdmin = async (req, res) => {
-    try {
-        const { id } = req.params
-        console.log(id)
-        
-        const recurringTransaction = await RecurringTransaction.findOneAndDelete({ _id: id })
-        if(!recurringTransaction){
-            return res.status(404).json({ message: "no Recurring Transaction found" })
-        }
-        res.status(200).json( { message: "Successfully delted.", recurringTransaction })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
 module.exports = {
     createRecurringTransaction,
     getRecurringTransactions,
-    getAllRecurringTransactions,
-    getAllRecurringTransactionsByUsername,
     deleteRecurringTransactionById,
-    deleteRecurringTransactionByIdAdmin
 }

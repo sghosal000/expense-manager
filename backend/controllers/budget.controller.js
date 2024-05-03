@@ -65,43 +65,6 @@ const getBudgets = async (req, res) => {
     }
 }
 
-const getAllBudgets = async (req, res) => {
-    try {
-        const budgets = await Budget.find()
-        if(budgets.length === 0){
-            return res.status(404).json({ message: "no Budget found" });
-        }
-
-        const formattedBudgets = budgets.map((budget) => {
-            return { ...budget._doc, isActive: budget.endDate >= new Date() }
-        })
-        res.status(200).json( formattedBudgets )
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
-const getAllBudgetsByUsername = async (req, res) => {
-    try {
-        const { username } = req.params
-        console.log(username)
-        const foundUser = await User.findOne({ username: username }).select('_id')
-        if(!foundUser){
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        const budgets = await Budget.find({ userid: foundUser._id })
-        const formattedBudgets = budgets.map((budget) => {
-            return { ...budget._doc, isActive: budget.endDate >= new Date() }
-        })
-        res.status(200).json( formattedBudgets )
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
 const expBudgetStatus = async (req, res) => {
     try {
         const userid = req.user.userid
@@ -162,27 +125,8 @@ const deleteBudgetById = async (req, res) => {
     }
 }
 
-const deleteBudgetByIdAdmin = async (req, res) => {
-    try {
-        const { id } = req.params
-        console.log(id)
-        
-        const budget = await Budget.findOneAndDelete({ _id: id })
-        if(!budget){
-            return res.status(404).json({ message: "no budget found" })
-        }
-        res.status(200).json( { message: "Successfully delted.", budget })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
 module.exports = {
     createBudget,
     getBudgets,
-    getAllBudgets,
-    getAllBudgetsByUsername,
     deleteBudgetById,
-    deleteBudgetByIdAdmin
 }

@@ -7,7 +7,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 class TransactionService {
     async getAllTransactions() {
         try {
-            const res = await axios.get(BASE_URL + "/transaction", authService.attachTokenToRequest())
+            const res = await axios.get(BASE_URL + "/transactions", authService.attachTokenToRequest())
             return { status: true, data: res.data }
         } catch (error) {
             console.error(error)

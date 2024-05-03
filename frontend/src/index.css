@@ -3,3 +3,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.highlight-white {
+	@apply shadow-lg border-t border-[#ffffff0d]
+}
+
+.background{
+	@apply w-full min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900
+}
