@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const transactionSchema = new mongoose.Schema({
     userid: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'User',
         required: true
     },
     amount: {
@@ -24,7 +24,7 @@ const transactionSchema = new mongoose.Schema({
     },
     categoryid: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'category',
+        ref: 'Category',
         required: true
     },
     recurringid: {

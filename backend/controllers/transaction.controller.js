@@ -59,7 +59,23 @@ const getTransactions = async (req, res) => {
             return res.status(401).json({ message: 'Unauthorized' })
         }
 
-        const transactions = await Transaction.find({ userid: userid })
+        let query = { userid }
+        const type = req.query.type 
+        if(type){
+            query.type = type
+        }
+
+        let transactions = await Transaction.find( query ).populate('categoryid', 'name')
+        transactions = transactions.map(transaction => ({
+            _id: transaction._id,
+            createdAt: new Date(transaction.createdAt).toLocaleDateString(),
+            type: transaction.type,
+            amount: transaction.amount,
+            category: transaction.categoryid.name,
+            note: transaction.note,
+            isRecurring: transaction.recurringid? true: false,
+        }))
+
         res.status(200).json({ transactions })
     } catch (error) {
         console.error(error);

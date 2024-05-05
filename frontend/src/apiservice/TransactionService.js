@@ -5,9 +5,9 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 
 
 class TransactionService {
-    async getAllTransactions() {
+    async geTransactions(type) {
         try {
-            const res = await axios.get(BASE_URL + "/transactions", authService.attachTokenToRequest())
+            const res = await axios.get(`${BASE_URL}/transactions?type=${type}`, authService.attachTokenToRequest())
             return { status: true, data: res.data }
         } catch (error) {
             console.error(error)
@@ -15,10 +15,10 @@ class TransactionService {
         }
     }
 
-    filterByType(allTransactions, type) {
-        console.log(allTransactions);
-        return allTransactions.filter((transaction) => transaction.type === type);
-    }
+    // filterByType(allTransactions, type) {
+    //     console.log(allTransactions);
+    //     return allTransactions.filter((transaction) => transaction.type === type);
+    // }
 
     async addTransaction(transaction) {
         try {
