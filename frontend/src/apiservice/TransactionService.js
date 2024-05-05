@@ -1,42 +1,16 @@
-import axios from "axios"
-import authService from "./AuthService"
-
-const BASE_URL = import.meta.env.VITE_BASE_URL
-
+import apiRequest from "./apiRequest"
 
 class TransactionService {
-    async geTransactions(type) {
-        try {
-            const res = await axios.get(`${BASE_URL}/transactions?type=${type}`, authService.attachTokenToRequest())
-            return { status: true, data: res.data }
-        } catch (error) {
-            console.error(error)
-            return { status: false, error }
-        }
+    getTransactions(type) {
+        return apiRequest.get(`/transactions?type=${type}`)
     }
 
-    // filterByType(allTransactions, type) {
-    //     console.log(allTransactions);
-    //     return allTransactions.filter((transaction) => transaction.type === type);
-    // }
-
-    async addTransaction(transaction) {
-        try {
-            const res = await axios.post(BASE_URL + "/transactions/add", transaction, authService.attachTokenToRequest())
-            return { status: true, data: res.data }
-        } catch (error) {
-            console.error(error)
-            return { status: false, error }
-        }
+    addTransaction(transaction) {
+        apiRequest.post("/transactions/add", data=transaction)
     }
-    async deleteTransaction(id) {
-        try {
-            const res = await axios.delete(BASE_URL + `/transactions/delete/${id}`, authService.attachTokenToRequest())
-            return { status: true, data: res.data }
-        } catch (error) {
-            console.error(error)
-            return { status: false, error }
-        }
+
+    deleteTransaction(id) {
+        apiRequest.delete(`/transactions/delete/${id}`)
     }
 }
 

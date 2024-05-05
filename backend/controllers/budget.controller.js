@@ -104,7 +104,6 @@ const getBudgetStatus = async (req, res) => {
             }
         ])
 
-        console.log(sumAmount);
         const totalSpent = sumAmount.length > 0 ? sumAmount[0].totalAmount : 0
 
         res.status(200).json({ type, totalSpent, goal: budget.amount })

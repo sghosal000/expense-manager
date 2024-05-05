@@ -1,50 +1,21 @@
-import axios from "axios"
-import authService from "./AuthService"
-
-const BASE_URL = import.meta.env.VITE_BASE_URL
+import apiRequest from "./apiRequest"
 
 
 class BudgetService {
-    async getBudgets() {
-        try {
-            const res = await axios.get(BASE_URL + "/budgets", authService.attachTokenToRequest())
-            return { status: true, data: res.data }
-        } catch (error) {
-            console.error(error)
-            return { status: false, error }
-        }
+    getBudgets() {
+        return apiRequest.get(`/budgets`)
     }
 
-    filterByType(allBudgets, type) {
-        console.log(allBudgets);
-        return allBudgets.filter((budget) => budget.type === type);
+    getBudgetStatus(type) {
+        return apiRequest.get(`/budgets/status?type=${type}`)
     }
 
-    findExpStatus(){
-        try {
-            
-        } catch (error) {
-            
-        }
+    addBudget(transaction) {
+        apiRequest.post("/transactions/add", data = transaction)
     }
 
-    async addBudget(budget) {
-        try {
-            const res = await axios.post(BASE_URL + "/budgets/add", budget, authService.attachTokenToRequest())
-            return { status: true, data: res.data }
-        } catch (error) {
-            console.error(error)
-            return { status: false, error }
-        }
-    }
-    async deleteBudget(id) {
-        try {
-            const res = await axios.delete(BASE_URL + `budgets/delete/${id}`, authService.attachTokenToRequest())
-            return { status: true, data: res.data }
-        } catch (error) {
-            console.error(error)
-            return { status: false, error }
-        }
+    deleteBudget(id) {
+        apiRequest.delete(`/transactions/delete/${id}`)
     }
 }
 
