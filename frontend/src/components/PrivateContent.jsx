@@ -1,6 +1,6 @@
 import React from "react"
 import { Navigate, useOutletContext } from "react-router-dom"
-import authService from "../apiservice/AuthService"
+import authService from "../apiservice/authService"
 
 export default function PrivateRoute({ children }) {
     const Loggedin = authService.isLoggedIn

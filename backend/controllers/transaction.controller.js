@@ -65,7 +65,7 @@ const getTransactions = async (req, res) => {
             query.type = type
         }
 
-        let transactions = await Transaction.find( query ).populate('categoryid', 'name')
+        let transactions = await Transaction.find( query ).populate('categoryid', 'name').sort({createdAt: -1})
         transactions = transactions.map(transaction => ({
             _id: transaction._id,
             createdAt: new Date(transaction.createdAt).toLocaleDateString(),

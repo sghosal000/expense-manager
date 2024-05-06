@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import authService from "../apiservice/AuthService";
+import authService from "../apiservice/authService";
 
 const Signup = () => {
     const [formData, setFormData] = useState({

@@ -11,3 +11,15 @@
 .background{
 	@apply w-full min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900
 }
+
+.form-field{
+	@apply block w-full rounded-md border-0 bg-neutral placeholder-txt-depressed shadow-md ring-1 ring-inset ring-neutral focus:ring-inset focus:ring-accent sm:leading-6
+}
+
+.form-label{
+	@apply block text-sm font-medium text-txt-depressed leading-6
+}
+
+.table-data{
+	@apply px-6 py-3
+}

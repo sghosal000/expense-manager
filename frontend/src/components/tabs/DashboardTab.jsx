@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import transactionService from '../../apiservice/TransactionService'
+import transactionService from '../../apiservice/transactionService'
 import budgetService from '../../apiservice/budgetService'
 import LoadingDashboard from "../loading/LoadingDashboard"
 
@@ -13,13 +13,13 @@ const DashboardTab = () => {
         setLoading(true)
 
         try {
-            const transactions = await transactionService.getAllTransactions()
+            const transactions = await transactionService.getTransactions()
             const budgets = await budgetService.getBudgets()
 
-            if(!transactions.status){
+            if (!transactions.status) {
                 throw error(transactions.error)
             }
-            if(!budgets.status){
+            if (!budgets.status) {
                 throw error(budgets.error)
             }
             setTransactions(transactions)
@@ -40,7 +40,7 @@ const DashboardTab = () => {
     if (loading) {
         return <LoadingDashboard />
     }
-    
+
     if (errorMessage) {
         return (
             <>
@@ -48,7 +48,9 @@ const DashboardTab = () => {
             </>
         )
     }
-    return <LoadingDashboard />
+    return (
+        <LoadingDashboard />
+    )
     // return (
     //     <div>DashboardTab</div>
     // )

@@ -6,11 +6,11 @@ class TransactionService {
     }
 
     addTransaction(transaction) {
-        apiRequest.post("/transactions/add", data=transaction)
+        return apiRequest.post("/transactions/add", transaction)
     }
 
     deleteTransaction(id) {
-        apiRequest.delete(`/transactions/delete/${id}`)
+        return apiRequest.delete(`/transactions/delete/${id}`)
     }
 }
 

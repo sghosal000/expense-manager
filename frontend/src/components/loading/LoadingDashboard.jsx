@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function LoadingDashboard() {
     return (
-        <div className="w-2/3 h-96 bg-base border highlight-white rounded-xl p-4">
+        <div className="w-full h-96 bg-base border highlight-white rounded-xl p-4">
             <div className="animate-pulse flex space-x-4">
                 <div className="rounded-full bg-txt-depressed h-20 w-20"></div>
                 <div className="flex-1 space-y-6 py-1">

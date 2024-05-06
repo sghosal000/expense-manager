@@ -24,7 +24,7 @@ export default function TabNavigation({ tabs, activeTab, setActiveTab }) {
     return (
         <>
             {/* Navbar for large screens */}
-            <nav className="sticky top-16 mt-20 bg-base/90 backdrop-blur-md w-2/3 highlight-white rounded-full px-2 z-10 hidden lg:block">
+            <nav className="sticky top-16 mt-20 bg-base/90 backdrop-blur-sm w-2/3 highlight-white rounded-full px-2 z-10 hidden lg:block">
                 <ul className="flex my-auto justify-between text-lg text-center">
                     {tabs.map((tab) => (
                         <li

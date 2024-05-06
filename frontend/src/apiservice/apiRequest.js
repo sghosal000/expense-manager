@@ -1,5 +1,5 @@
 import axios from "axios"
-import authService from "./AuthService"
+import authService from "./authService"
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
