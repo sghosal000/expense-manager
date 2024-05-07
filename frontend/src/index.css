@@ -21,5 +21,26 @@
 }
 
 .table-data{
-	@apply px-6 py-3
+	@apply px-3 md:px-6 py-1 md:py-3
 }
+
+/* Define scrollbar styles */
+::-webkit-scrollbar {
+    width: 5px; /* Width of the scrollbar */
+}
+
+/* Track styles */
+::-webkit-scrollbar-track {
+    background: #1e293b; /* Color of the scrollbar track */
+}
+
+/* Handle styles */
+::-webkit-scrollbar-thumb {
+    background: #334155; /* Color of the scrollbar handle */
+    border-radius: 6px; /* Radius of the scrollbar handle */
+}
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+} */

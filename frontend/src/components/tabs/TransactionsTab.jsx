@@ -39,12 +39,18 @@ const TransactionsTab = ({ type, activeTab }) => {
 		fetchData()
 	}, [activeTab, trigger])
 
+	if (errorMessage){
+		return (
+			<p>{errorMessage}</p>
+		)
+	}
+
 	return (
-		<div className="flex flex-row space-x-6">
-			<div className="w-1/3">
+		<div className="flex flex-col space-y-2 md:flex-row md:space-x-6">
+			<div className="w-full md:w-1/3">
 				<TransactionForm type={type} refresh={refresh} />
 			</div>
-			<div className="w=2/3">
+			<div className="w-full md:w-2/3">
 				<TransactionsTable data={transactions} refresh={refresh} />
 			</div>
 		</div>

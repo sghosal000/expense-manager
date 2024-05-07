@@ -9,7 +9,6 @@ export default function TransactionForm({ type, refresh }) {
     const [note, setNote] = useState('')
 
     const [message, setMessage] = useState('')
-    let messageColor
 
     const categories = {
         income: ["Salary", "Business Income", "Investment Return", "Rental", "Freelancing", "Gift", "Pocket Money", "Govt Benifit"],
@@ -23,35 +22,29 @@ export default function TransactionForm({ type, refresh }) {
         const newTransaction = {
             amount,
             categoryName: category,
+            createdAt: date,
             note,
             type,
         }
+        const res = await transactionService.addTransaction(newTransaction)
 
-        try {
-            const res = await transactionService.addTransaction(newTransaction)
-            messageColor = res.status? "text-green": "text-red"
-    
-            if (res.status) {
-                setMessage("Transaction added")
-                refresh()
-            }
-            else {
-                setMessage("Error.. try again")
-            }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setAmount("")
-            setCategory("")
-            setNote("")
-            setDate(new Date().toISOString().split('T')[0])
+        if (res.status) {
+            setMessage("Transaction added")
+            refresh()
         }
+        else {
+            setMessage("Error.. try again")
+        }
+        setAmount("")
+        setCategory("")
+        setNote("")
+        setDate(new Date().toISOString().split('T')[0])
     }
 
     return (
         <div className="flex flex-col items-center p-6 bg-base highlight-white rounded-lg">
             <h1 className="pb-6 text-txt-depressed">Add a new Transaction</h1>
-            <p className={`${messageColor}`}>{message}</p>
+            <p className={message.startsWith("Error") ? "text-red" : "text-green"}>{message}</p>
             <form onSubmit={handleSubmit} className="w-full space-y-2">
                 <div>
                     <input

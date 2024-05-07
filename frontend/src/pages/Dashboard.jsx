@@ -40,7 +40,7 @@ const Dashboard = () => {
     return (
         <div className="flex flex-col items-center gap-y-2 background text-txt">
             <TabNavigation tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-            <div className="w-4/5">
+            <div className="w-4/5 text-center">
                 {render(activeTab)}
             </div>
         </div>

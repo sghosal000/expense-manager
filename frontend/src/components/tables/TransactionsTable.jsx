@@ -17,10 +17,10 @@ const TransactionsTable = ({ data, refresh }) => {
     }
 
     return (
-        <div className="w-full max-h-auto bg-base highlight-white rounded-lg overflow-x-auto">
-            <table className="text-sm text-center">
-                <thead className="bg-neutral">
-                    <tr>
+        <div className="bg-base highlight-white rounded-lg overflow-x-auto">
+            <table className="max-h-80 min-w-full flex flex-col text-sm text-center">
+                <thead className='w-full bg-neutral'>
+                    <tr className='flex justify-between'>
                         <th className="table-data">Date</th>
                         <th className="table-data">Amount</th>
                         <th className="table-data">Category</th>
@@ -29,15 +29,15 @@ const TransactionsTable = ({ data, refresh }) => {
                         <th className="table-data"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="overflow-y-auto">
                     {data && data.map(transaction => (
                         <tr key={transaction._id} className="border-t border-neutral text-txt-depressed">
-                            <td className="table-data">{transaction.createdAt}</td>
-                            <td className={`table-data ${amountColor}`}>{transaction.amount}</td>
-                            <td className="table-data">{transaction.category}</td>
-                            <td className="table-data">{transaction.note}</td>
-                            <td className="table-data">{transaction.isRecurring ? "Yes" : "No"}</td>
-                            <td className="table-data text-accent">
+                            <td className="table-data w-2/12">{transaction.createdAt}</td>
+                            <td className={`table-data ${amountColor} w-2/12`}>{transaction.amount}</td>
+                            <td className="table-data w-1/12">{transaction.category}</td>
+                            <td className="table-data w-4/12">{transaction.note}</td>
+                            <td className="table-data w-2/12">{transaction.isRecurring ? "Yes" : "No"}</td>
+                            <td className="table-data text-accent w-1/12">
                                 <a href="#" onClick={() => handleRemove(transaction._id)}>remove</a>
                             </td>
                         </tr>
