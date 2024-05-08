@@ -8,6 +8,10 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 
+// import Demo from './pages/Demo'
+// import { TransectionGraph } from './components/TransectionGraph'
+
+
 function App() {
 	const router = createBrowserRouter([
 		{
@@ -23,9 +27,12 @@ function App() {
 					element: (
 						<PrivateRoute>
 							<Dashboard />
+							
 						</PrivateRoute>
 					)
 				},
+				// { path: "/Demo", element: <Demo /> },
+				
 			]
 		}
 	])

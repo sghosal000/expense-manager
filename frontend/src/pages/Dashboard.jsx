@@ -6,6 +6,7 @@ import BudgetTab from '../components/tabs/BudgetTab';
 import RecurringTab from '../components/tabs/RecurringTab';
 
 
+
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('Dashboard')
 
@@ -40,6 +41,7 @@ const Dashboard = () => {
     return (
         <div className="flex flex-col items-center gap-y-2 background text-txt">
             <TabNavigation tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+            
             {render(activeTab)}
         </div>
     )
