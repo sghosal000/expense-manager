@@ -4,6 +4,7 @@ const {
     getAllUsers,
     getUserbyUsername,
     getUserbyId,
+    removeUser,
     getAllTransactions,
     getAllTransactionByUsername,
     deleteTransactionById,
@@ -23,6 +24,7 @@ adminRouter.use(verifyRole(['admin']))
 adminRouter.get('/users', getAllUsers)
 adminRouter.get('/users/:username', getUserbyUsername)
 adminRouter.get('/users/id/:id', getUserbyId)
+adminRouter.delete('/users/remove/:id', removeUser)
 
 adminRouter.get('/transactions/', getAllTransactions)
 adminRouter.get('/transactions/:username', getAllTransactionByUsername)

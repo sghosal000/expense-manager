@@ -7,6 +7,17 @@ class AuthService {
         this.user = null
         this.isLoggedIn = localStorage.getItem('jwtAccessToken') !== null
     }
+
+    async signup(newUser) {
+        try {
+            const res = await axios.post(`${BASE_URL}/auth/signup`, newUser)
+            return { status: true }
+        } catch (error) {
+            console.error(error);
+            throw new Error("Signup failed")
+        }
+    }
+
     async login(id, password) {
         const credentials = { id, password };
 

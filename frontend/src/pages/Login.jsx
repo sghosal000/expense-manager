@@ -21,6 +21,9 @@ const Login = () => {
         } catch (error) {
             console.error(error);
             setMessage("Login failed. Try again...");
+        } finally {
+            setUsername("")
+            setPassword("")
         }
     }
 
@@ -33,7 +36,7 @@ const Login = () => {
 
     return (
         <div className="background content-center lg:px-8 text-txt">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-lg">
+            <div className="w-4/5 mx-auto lg:max-w-lg">
                 <form
                     className="space-y-6 p-10 rounded-lg shadow-2xl highlight-white bg-base"
                     onSubmit={handleSubmit}
@@ -48,23 +51,22 @@ const Login = () => {
                             Sign in to your account
                         </h2>
                     </div>
-                    <p className="text-center text-red-400">{message}</p>
-
+                    <div className="h-1">
+                        <p className="text-center text-xs text-red">{message}</p>
+                    </div>
                     <div>
                         <label htmlFor="username" className="form-label">User ID</label>
-                        <div className="mt-2">
-                            <input
-                                type="text"
-                                id="username"
-                                value={username}
-                                placeholder="Username or email"
-                                onChange={(e) => setUsername(e.target.value)}
-                                className="form-field"
-                                autoFocus
-                                onKeyDown={handleKeyPress}
-                                required
-                            />
-                        </div>
+                        <input
+                            type="text"
+                            id="username"
+                            value={username}
+                            placeholder="Username or email"
+                            onChange={(e) => setUsername(e.target.value)}
+                            className="form-field"
+                            autoFocus
+                            onKeyDown={handleKeyPress}
+                            required
+                        />
                     </div>
                     <div>
                         <div className="flex items-center justify-between">
@@ -78,17 +80,15 @@ const Login = () => {
                                 </a>
                             </div>
                         </div>
-                        <div className="mt-2">
-                            <input
-                                type="password"
-                                id="password"
-                                value={password}
-                                placeholder="Password"
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="form-field"
-                                required
-                            />
-                        </div>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            placeholder="Password"
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="form-field"
+                            required
+                        />
                     </div>
                     <button
                         type="submit"
@@ -101,8 +101,8 @@ const Login = () => {
                         <a href="#" className="font-semibold leading-6 text-accent hover:text-sky-600">Sign up</a>
                     </p>
                 </form>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

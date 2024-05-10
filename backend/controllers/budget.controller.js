@@ -56,9 +56,6 @@ const getBudgets = async (req, res) => {
         }
 
         const budgets = await Budget.find({ userid: userid })
-        if (budgets.length === 0) {
-            return res.status(404).json({ message: "no Budget found" });
-        }
 
         const formattedBudgets = budgets.map((budget) => {
             return { ...budget._doc, isActive: budget.endDate >= new Date() }

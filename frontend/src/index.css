@@ -13,7 +13,7 @@
 }
 
 .form-field{
-	@apply block w-full rounded-md border-0 bg-neutral placeholder-txt-depressed shadow-md ring-1 ring-inset ring-neutral focus:ring-inset focus:ring-accent sm:leading-6
+	@apply block w-full text-sm rounded-md border-0 bg-neutral placeholder-txt-depressed shadow-md ring-1 ring-inset ring-neutral focus:ring-inset focus:ring-accent sm:leading-6
 }
 
 .form-label{
