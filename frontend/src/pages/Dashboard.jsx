@@ -6,6 +6,7 @@ import BudgetTab from '../components/tabs/BudgetTab';
 import RecurringTab from '../components/tabs/RecurringTab';
 
 
+
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('Dashboard')
 
