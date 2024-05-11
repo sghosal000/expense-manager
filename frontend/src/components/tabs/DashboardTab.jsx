@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from 'react'
-import transactionService from '../../apiservice/TransactionService'
+import transactionService from '../../apiservice/transactionService'
 import budgetService from '../../apiservice/budgetService'
+import TransactionsTable from '../tables/TransactionsTable'
 import LoadingDashboard from "../loading/LoadingDashboard"
 
-const DashboardTab = () => {
+const DashboardTab = ({ activeTab }) => {
     const [transactions, setTransactions] = useState([])
     const [budgets, setBudgets] = useState([])
     const [loading, setLoading] = useState(true)
-    const [errorMessage, setErrorMessage] = useState(null)
+	const [trigger, setTrigger] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const fetchData = async () => {
         setLoading(true)
 
         try {
-            const transactions = await transactionService.getAllTransactions()
-            const budgets = await budgetService.getBudgets()
+            const resultTransaction = await transactionService.getTransactions("")
+            const resultBudget = await budgetService.getBudgets("")
 
-            if(!transactions.status){
-                throw error(transactions.error)
+            if (!resultTransaction.status) {
+                throw error(resultTransaction.error)
             }
-            if(!budgets.status){
-                throw error(budgets.error)
+            if (!resultBudget.status) {
+                throw error(resultBudget.error)
             }
-            setTransactions(transactions)
-            setBudgets(budgets)
+            setTransactions(resultTransaction.data.transactions)
+            setBudgets(resultBudget.data.budgets)
             setErrorMessage(null)
         } catch (error) {
             console.error(error)
@@ -33,25 +35,30 @@ const DashboardTab = () => {
         }
     }
 
+    const refresh = () => {
+		setTrigger(!trigger)
+	}
+
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [activeTab, trigger])
 
     if (loading) {
         return <LoadingDashboard />
     }
-    
+
     if (errorMessage) {
         return (
-            <>
-                <p className="text-xl text-txt-depressed">{errorMessage}</p>
-            </>
+            <p className="text-xl text-txt-depressed">{errorMessage}</p>
         )
     }
-    return <LoadingDashboard />
-    // return (
-    //     <div>DashboardTab</div>
-    // )
+
+    return (
+        <div className="flex flex-col space-y-2 md:flex-row md:space-x-6">
+            <div className="w-full md:w-2/3">
+                <TransactionsTable data={transactions} refresh={refresh} />
+            </div>
+        </div>)
 }
 
 export default DashboardTab

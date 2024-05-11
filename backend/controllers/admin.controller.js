@@ -53,6 +53,21 @@ const getUserbyId = async (req, res) => {
     }
 }
 
+const removeUser = async (req, res) => {
+    try {
+        const { id } = req.params
+        console.log(id)
+
+        const user = await User.findOneAndDelete({ _id: id })
+        if(!user){
+            return res.status(404).json({ message: "no user found" })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 
 // Admin conttrols for transactions
 
@@ -208,6 +223,7 @@ module.exports = {
     getAllUsers,
     getUserbyUsername,
     getUserbyId,
+    removeUser,
     getAllTransactions,
     getAllTransactionByUsername,
     deleteTransactionById,

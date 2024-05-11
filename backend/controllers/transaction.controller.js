@@ -9,9 +9,9 @@ const createTransaction = async (req, res) => {
             return res.status(401).json({ message: 'Unauthorized' })
         }
 
-        const { amount, note, type, categoryName } = req.body
+        const { amount, note, type, categoryName, createdAt } = req.body
 
-        if (!amount || !note || !type || !categoryName) {
+        if (!amount || !type || !categoryName) {
             return res.status(400).json({ message: "missing required fields" })
         }
 
@@ -38,7 +38,8 @@ const createTransaction = async (req, res) => {
             note,
             type,
             categoryid: category._id,
-            recurringid: null
+            recurringid: null,
+            createdAt
         })
         await newTransaction.save()
 
@@ -65,7 +66,7 @@ const getTransactions = async (req, res) => {
             query.type = type
         }
 
-        let transactions = await Transaction.find( query ).populate('categoryid', 'name')
+        let transactions = await Transaction.find( query ).populate('categoryid', 'name').sort({updatedAt: -1})
         transactions = transactions.map(transaction => ({
             _id: transaction._id,
             createdAt: new Date(transaction.createdAt).toLocaleDateString(),

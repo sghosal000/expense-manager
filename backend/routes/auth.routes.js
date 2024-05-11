@@ -8,7 +8,7 @@ const {
 
 const authRouter = express.Router()
 
-authRouter.post('/register', signup)
+authRouter.post('/signup', signup)
 authRouter.post('/login', login)
 authRouter.post('/refreshToken', refreshToken)
 

@@ -55,15 +55,12 @@ const getBudgets = async (req, res) => {
             return res.status(401).json({ message: 'Unauthorized' })
         }
 
-        const budgets = await Budget.find({ userid: userid })
-        if (budgets.length === 0) {
-            return res.status(404).json({ message: "no Budget found" });
-        }
+        let budgets = await Budget.find({ userid: userid })
 
-        const formattedBudgets = budgets.map((budget) => {
+        budgets = budgets.map((budget) => {
             return { ...budget._doc, isActive: budget.endDate >= new Date() }
         })
-        res.status(200).json(formattedBudgets)
+        res.status(200).json({ budgets })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
@@ -79,8 +76,8 @@ const getBudgetStatus = async (req, res) => {
 
         const type = req.query.type
         const budget = await Budget.findOne({ userid, type })
-        if(!budget){
-            return res.status(404).json({ message: `no ${type} budget exists`})
+        if (!budget) {
+            return res.status(404).json({ message: `no ${type} budget exists` })
         }
 
         const { startDate, endDate } = budget
