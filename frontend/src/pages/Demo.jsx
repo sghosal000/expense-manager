@@ -1,6 +1,6 @@
 import React from 'react'
 import { TransactionGraph } from '../components/TransactionGraph'
-import "./Demo.css"
+
 
 import PieChart from '../components/PieChart'
 import { pieData } from '../Fake_data2'
