@@ -2,8 +2,6 @@ import React from 'react'
 import transactionService from '../../apiservice/transactionService'
 
 const TransactionsTable = ({ data, refresh }) => {
-    const amountColor = data?.[0]?.type === "income" ? "text-green" : data?.[0]?.type === "expense" ? "text-red" : "text-cyan"
-
     const handleRemove = async (id) => {
         try {
             const res = await transactionService.deleteTransaction(id)
@@ -33,9 +31,9 @@ const TransactionsTable = ({ data, refresh }) => {
                     {data && data.map(transaction => (
                         <tr key={transaction._id} className="border-t border-neutral text-txt-depressed">
                             <td className="table-data w-2/12">{transaction.createdAt}</td>
-                            <td className={`table-data ${amountColor} w-2/12`}>{transaction.amount}</td>
-                            <td className="table-data w-1/12">{transaction.category}</td>
-                            <td className="table-data w-4/12">{transaction.note}</td>
+                            <td className={`table-data ${transaction.type === "income" ? "text-green" : transaction.type === "expense" ? "text-red" : "text-cyan"} w-2/12`}>{transaction.amount}</td>
+                            <td className="table-data w-2/12">{transaction.category}</td>
+                            <td className="table-data w-3/12">{transaction.note}</td>
                             <td className="table-data w-2/12">{transaction.isRecurring ? "Yes" : "No"}</td>
                             <td className="table-data text-accent w-1/12">
                                 <a href="#" onClick={() => handleRemove(transaction._id)}>remove</a>

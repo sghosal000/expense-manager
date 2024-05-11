@@ -21,7 +21,7 @@ const Dashboard = () => {
     const render = (activeTab) => {
         switch (activeTab) {
             case tabs[0].name:
-                return <DashboardTab />;
+                return <DashboardTab activeTab={activeTab}/>;
             case tabs[1].name:
                 return <TransactionsTab type={"income"} activeTab={activeTab} />;
             case tabs[2].name:
@@ -29,9 +29,9 @@ const Dashboard = () => {
             case tabs[3].name:
                 return <TransactionsTab type={"investment"} activeTab={activeTab} />;
             case tabs[4].name:
-                return <BudgetTab />;
+                return <BudgetTab activeTab={activeTab}/>;
             case tabs[5].name:
-                return <RecurringTab />;
+                return <RecurringTab activeTab={activeTab}/>;
             default:
                 return null;
         }
