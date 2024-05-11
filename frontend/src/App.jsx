@@ -8,7 +8,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 
-// import Demo from './pages/Demo'
+import Demo from './pages/Demo'
 // import { TransectionGraph } from './components/TransectionGraph'
 
 
@@ -31,7 +31,7 @@ function App() {
 						</PrivateRoute>
 					)
 				},
-				// { path: "/Demo", element: <Demo /> },
+				{ path: "/demo", element: <Demo /> },
 				
 			]
 		}
