@@ -11,11 +11,11 @@ class BudgetService {
     }
 
     addBudget(transaction) {
-        apiRequest.post("/transactions/add", data = transaction)
+        return apiRequest.post("/budgets/add", transaction)
     }
 
     deleteBudget(id) {
-        apiRequest.delete(`/transactions/delete/${id}`)
+        return apiRequest.delete(`/budgets/delete/${id}`)
     }
 }
 

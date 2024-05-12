@@ -7,11 +7,11 @@ class RecurringService {
     }
 
     addRecurring(recurring) {
-        apiRequest.post("/recurringTransactions/add", data = recurring)
+        return apiRequest.post("/recurringTransactions/add", data = recurring)
     }
 
     deleteRecurring(id) {
-        apiRequest.delete(`/recurringTransactions/delete/${id}`)
+        return apiRequest.delete(`/recurringTransactions/delete/${id}`)
     }
 }
 

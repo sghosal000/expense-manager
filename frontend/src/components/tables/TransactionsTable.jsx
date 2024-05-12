@@ -2,7 +2,7 @@ import React from 'react'
 import transactionService from '../../apiservice/transactionService'
 
 const TransactionsTable = ({ data, refresh }) => {
-    const handleRemove = async (id) => {
+    const handleDelete = async (id) => {
         try {
             const res = await transactionService.deleteTransaction(id)
 
@@ -36,7 +36,7 @@ const TransactionsTable = ({ data, refresh }) => {
                             <td className="table-data w-3/12">{transaction.note}</td>
                             <td className="table-data w-2/12">{transaction.isRecurring ? "Yes" : "No"}</td>
                             <td className="table-data text-accent w-1/12">
-                                <a href="#" onClick={() => handleRemove(transaction._id)}>remove</a>
+                                <a href="#" onClick={() => handleDelete(transaction._id)}>remove</a>
                             </td>
                         </tr>
                     ))}

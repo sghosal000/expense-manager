@@ -18,19 +18,22 @@ const BudgetForm = ({ refresh }) => {
             startDate,
             endDate,
         }
-        const res = await budgetService.addBudget(newTransaction)
 
-        if (res.status) {
-            setMessage("Transaction added")
-            refresh()
-        }
-        else {
+        try {
+            const { status } = await budgetService.addBudget(newTransaction)
+            if (res.status) {
+                setMessage("Transaction added")
+                refresh()
+            }
+        } catch (error) {
+            console.error(error);
             setMessage("Error.. try again")
+        } finally {
+            setAmount("")
+            setType("")
+            setStartDate(new Date().toISOString().split('T')[0])
+            setEndDate(new Date().toISOString().split('T')[0])
         }
-        setAmount("")
-        setType("")
-        setStartDate(new Date().toISOString().split('T')[0])
-        setEndDate(new Date().toISOString().split('T')[0])
     }
 
     return (

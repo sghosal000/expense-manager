@@ -1,21 +1,17 @@
 import React from 'react'
-import { TransactionGraph } from '../components/TransactionGraph'
+import LineChart from '../components/charts/LineChart'
+import DoughnutChart from '../components/charts/PieChart'
+import { pieData, amountByType } from '../components/charts/Fake_data2'
 
-
-import PieChart from '../components/PieChart'
-import { pieData } from '../Fake_data2'
 // tumne kuch changeskiya tha kya ? us
 function Demo() {
   return (
     <div className='custom-container'>
-      
       <div className='graph'>
-      <TransactionGraph></TransactionGraph>
-      <PieChart pieChartData={pieData}></PieChart>
-
+        <LineChart />
+        {/* <PieChart pieChartData={pieData}></PieChart> */}
+        <DoughnutChart amountByType={amountByType} />
       </div>
-       // are 
-      
     </div>
   )
 }
