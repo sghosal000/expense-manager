@@ -59,6 +59,8 @@ const Signup = () => {
                 lname: "",
                 age: ""
             })
+
+            setTimeout(() => setMessage(''), 5000)
         }
     }
 

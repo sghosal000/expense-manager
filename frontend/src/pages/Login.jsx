@@ -24,6 +24,8 @@ const Login = () => {
         } finally {
             setUsername("")
             setPassword("")
+
+            setTimeout(() => setMessage(''), 5000)
         }
     }
 

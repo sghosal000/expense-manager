@@ -1,20 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import budgetService from '../../apiservice/budgetService'
 
+import { useData } from '../../contexts/DataContext'
+
+
 export const ProgressBar = ({ data }) => {
+	const { refresh } = useData()
+	const [message, setMessage] = useState('')
+
 	const progress = (data.totalSpent / data.goal) * 100
+
 	let color = ''
 	if (data.type === 'expense'){
 		color = progress >= 80 ? "bg-red" : "bg-teal-500"
 	} else {
 		color = progress <= 60 ? "bg-red" : "bg-teal-500"
 	}
+	
+	const handleDelete = async () => {
+		try {
+			const res = await budgetService.deleteBudget(data._id)
+			if(res.status){
+				refresh()
+			}
+		} catch (error) {
+			console.error(error)
+			setMessage("Couldn't delete budget.. Try again.")
+		}
+	}
 
 	return (
 		<div className='bg-base h-auto p-4 space-y-2 rounded-lg highlight-white content-center text-sm text-txt-depressed'>
-			<div className='flex'>
+			<div className='flex justify-between'>
 				<h1 className='text-txt text-xl font-semibold'>{data.type}</h1>
-				<p className='text-red font-extrabold ml-auto cursor-pointer'>X</p>
+				<p className='text-red'>{message}</p>
+				<p className='text-red font-extrabold cursor-pointer' onClick={handleDelete}>X</p>
 			</div>
 			<div className='flex justify-between'>
 				<p>Start Date: {data.startDate}</p>

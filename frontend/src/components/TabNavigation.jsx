@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useData } from '../contexts/DataContext';
 
-export default function TabNavigation({ tabs, activeTab, setActiveTab }) {
+export default function TabNavigation({ tabs }) {
+    const { activeTab, setActiveTab } = useData()
+    
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const dropdownRef = useRef(null);
 

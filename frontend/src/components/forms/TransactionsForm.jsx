@@ -5,7 +5,7 @@ import transactionService from '../../apiservice/transactionService'
 export default function TransactionForm({ type, refresh }) {
     const [amount, setAmount] = useState('')
     const [category, setCategory] = useState('')
-    const [date, setDate] = useState(null)
+    const [date, setDate] = useState('')
     const [note, setNote] = useState('')
 
     const [message, setMessage] = useState('')
@@ -41,7 +41,9 @@ export default function TransactionForm({ type, refresh }) {
             setAmount("")
             setCategory("")
             setNote("")
-            setDate(null)
+            setDate('')
+
+            setTimeout(() => setMessage(''), 5000)
         }
     }
 

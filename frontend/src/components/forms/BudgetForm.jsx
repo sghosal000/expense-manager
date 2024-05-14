@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import budgetService from '../../apiservice/budgetService'
 
-const BudgetForm = ({ refresh }) => {
+import { useData } from '../../contexts/DataContext'
+
+const BudgetForm = () => {
+    const dataContext = useData()
+	const { refresh } = dataContext
+
     const [amount, setAmount] = useState('')
     const [type, setType] = useState('expense')
     const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0])
@@ -18,7 +23,6 @@ const BudgetForm = ({ refresh }) => {
             startDate,
             endDate,
         }
-        console.log(newTransaction);
 
         try {
             const { status } = await budgetService.addBudget(newTransaction)
@@ -26,14 +30,17 @@ const BudgetForm = ({ refresh }) => {
                 setMessage("Transaction added")
                 refresh()
             }
+            // for !status error won't be thrown, so no error message will be set. check it later
         } catch (error) {
-            console.error(error);
             setMessage("Error.. try again")
+            console.error(error)
         } finally {
             setAmount("")
             setType("")
             setStartDate(new Date().toISOString().split('T')[0])
             setEndDate(new Date().toISOString().split('T')[0])
+
+            setTimeout(() => setMessage(''), 5000)
         }
     }
 

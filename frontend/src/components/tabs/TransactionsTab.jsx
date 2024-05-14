@@ -4,12 +4,12 @@ import TransactionForm from '../forms/TransactionsForm'
 import TransactionsTable from '../tables/TransactionsTable'
 import LineChart from '../charts/LineChart'
 import DoughnutChart from '../charts/PieChart'
-import LoadingDashboard from "../loading/LoadingDashboard"
-import { amountByType } from '../charts/Fake_data2'
-import { lineChartData } from '../charts/FAKE_DATA';
 
+import { useData } from '../../contexts/DataContext'
 
-const TransactionsTab = ({ type, activeTab }) => {
+const TransactionsTab = ({ type }) => {
+	const { activeTab } = useData()
+
 	const [transactions, setTransactions] = useState([])
 	const [transactionsMonth, setTransactionsMonth] = useState({})
 	const [transactionsByCategory, setTransactionsByCategory] = useState({})
