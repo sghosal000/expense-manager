@@ -61,15 +61,15 @@ const TransactionsTab = ({ type, activeTab }) => {
 				<div className="w-full md:w-1/3">
 					<TransactionForm type={type} refresh={refresh} />
 				</div>
-				<div className="w-full h-60 md:w-2/3 md:h-auto">
+				<div className="w-full h-auto md:w-2/3 md:h-auto">
 					<LineChart data={transactionsMonth} />
 				</div>
 			</div>
-			<div className=" h-80 flex flex-col space-y-2 md:flex-row md:space-x-6">
-				<div className="w-full h-full md:w-2/3">
+			<div className="flex flex-col space-y-2 md:flex-row md:space-x-6 md:h-80">
+				<div className="w-full h-full md:w-2/3 md:text-xs">
 					<TransactionsTable data={transactions} refresh={refresh} />
 				</div>
-				<div className='w-full h-60 md:w-1/3 md:h-80'>
+				<div className='w-full h-auto flex justify-center md:w-1/3'>
 					<DoughnutChart amountByType={transactionsByCategory} />
 				</div>
 			</div>

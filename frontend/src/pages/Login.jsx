@@ -92,7 +92,7 @@ const Login = () => {
                     </div>
                     <button
                         type="submit"
-                        className="flex w-full justify-center rounded-md bg-accent hover:bg-sky-600 font-semibold leading-6 py-2 px-3 shadow-md transition-all"
+                        className="form-submit"
                     >
                         Sign in
                     </button>

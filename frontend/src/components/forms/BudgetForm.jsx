@@ -3,7 +3,7 @@ import budgetService from '../../apiservice/budgetService'
 
 const BudgetForm = ({ refresh }) => {
     const [amount, setAmount] = useState('')
-    const [type, setType] = useState('')
+    const [type, setType] = useState('expense')
     const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0])
     const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0])
 
@@ -18,10 +18,11 @@ const BudgetForm = ({ refresh }) => {
             startDate,
             endDate,
         }
+        console.log(newTransaction);
 
         try {
             const { status } = await budgetService.addBudget(newTransaction)
-            if (res.status) {
+            if (status) {
                 setMessage("Transaction added")
                 refresh()
             }
@@ -38,7 +39,7 @@ const BudgetForm = ({ refresh }) => {
 
     return (
         <div className="flex flex-col items-center p-6 bg-base highlight-white rounded-lg">
-            <h1 className="pb-6 text-txt-depressed">Set a new Goal</h1>
+            <h1 className="pb-4 text-txt-depressed">Set a new Goal</h1>
             <form onSubmit={handleSubmit} className="w-full space-y-4">
                 <div className="h-1">
                     <p className={`text-xs ${message.startsWith("Error") ? "text-red" : "text-green"}`}>{message}</p>
@@ -54,17 +55,40 @@ const BudgetForm = ({ refresh }) => {
                         required
                     />
                 </div>
-                <div className="flex flex-row space-x-2">
-                    <select
-                        id="type"
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                        className="form-field"
-                        required
-                    >
-                        <option value="expense">Expense</option>
-                        <option value="investment">Investment</option>
-                    </select>
+                <div className="flex w-full space-x-4">
+                    <div className='w-1/2'>
+                        <input
+                            type="radio"
+                            id="expense"
+                            name="type"
+                            value="expense"
+                            onChange={(e) => setType(e.target.value)}
+                            className="peer hidden"
+                            checked
+                        />
+                        <label
+                            htmlFor="expense"
+                            className='form-label highlight-white cursor-pointer select-none rounded-full py-2 text-center peer-checked:bg-neutral peer-checked:font-bold peer-checked:text-sky-300 transition-all'
+                        >
+                            Expense
+                        </label>
+                    </div>
+                    <div className='w-1/2'>
+                        <input
+                            type="radio"
+                            id="investment"
+                            name="type"
+                            value="investment"
+                            onChange={(e) => setType(e.target.value)}
+                            className='peer hidden'
+                        />
+                        <label
+                            htmlFor="investment"
+                            className='form-label highlight-white cursor-pointer select-none rounded-full py-2 text-center peer-checked:bg-neutral peer-checked:font-bold peer-checked:text-sky-300 transition-all'
+                        >
+                            Investment
+                        </label>
+                    </div>
                 </div>
                 <div className='flex space-x-2'>
                     <div className='w-1/2'>

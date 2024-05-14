@@ -5,14 +5,14 @@ import transactionService from '../../apiservice/transactionService'
 export default function TransactionForm({ type, refresh }) {
     const [amount, setAmount] = useState('')
     const [category, setCategory] = useState('')
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+    const [date, setDate] = useState(null)
     const [note, setNote] = useState('')
 
     const [message, setMessage] = useState('')
 
     const categories = {
         income: ["Salary", "Business Income", "Investment Return", "Rental", "Freelancing", "Gift", "Pocket Money", "Govt Benifit"],
-        expense: ["Food", "Transport", "Clothing", "Personal Care", "Household", "Groceries", "Rent", "Subscriptions", "Entertainment", "Hobbies", "Education", "Fees", "Loans", "Credit Card", "Insurance"],
+        expense: ["Food", "Transport", "Clothing", "Personal Care", "Household", "Groceries", "Rent", "Subscriptions", "Entertainment", "Hobbies", "Education", "Fees", "Loans", "Credit Card", "Insurance", "Gift"],
         investment: ["Stocks", "Mutual Fund", "ETFs", "Bonds", "Real Estate", "Gold", "Cryptocurrencies"]
     }
 
@@ -26,19 +26,23 @@ export default function TransactionForm({ type, refresh }) {
             note,
             type,
         }
-        const res = await transactionService.addTransaction(newTransaction)
 
-        if (res.status) {
-            setMessage("Transaction added")
-            refresh()
-        }
-        else {
+        try {
+            const res = await transactionService.addTransaction(newTransaction)
+    
+            if (res.status) {
+                setMessage("Transaction added")
+                refresh()
+            }
+        } catch (error) {
+            console.error(error);
             setMessage("Error.. try again")
+        } finally {
+            setAmount("")
+            setCategory("")
+            setNote("")
+            setDate(null)
         }
-        setAmount("")
-        setCategory("")
-        setNote("")
-        setDate(new Date().toISOString().split('T')[0])
     }
 
     return (
@@ -91,7 +95,7 @@ export default function TransactionForm({ type, refresh }) {
                         className='form-field'
                     ></textarea>
                 </div>
-                <button type='submit' className="w-full py-2 text-center font-semibold rounded-md bg-accent hover:bg-sky-600 shadow-md transition-all">Add {type}</button>
+                <button type='submit' className="form-submit">Add {type}</button>
                 {/* <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                     Toggle modal
                 </button>
