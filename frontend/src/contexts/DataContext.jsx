@@ -7,12 +7,25 @@ export const DataProvider = (props) => {
 	const [activeTab, setActiveTab] = useState('Dashboard')
 	const [errorMessage, setErrorMessage] = useState(null)
 
+	const [user, setUser] = useState({})
+	const [loggedin, setLoggedin] = useState(false	)
 	const [expenseStatus, setExpenseStatus] = useState({})
 	const [investStatus, setInvestStatus] = useState({})
 	const [trigger, setTrigger] = useState(false)
 
 	const refresh = () => {
 		setTrigger(!trigger)
+	}
+
+	const afterLogin = (user) => {
+		setUser(user)
+		setLoggedin(true)
+	}
+
+	const afterLogout = () => {
+		localStorage.removeItem("jwtAccessToken")
+		setUser({})
+		setLoggedin(false)
 	}
 
 	const fetchBudgetData = async () => {
@@ -44,6 +57,10 @@ export const DataProvider = (props) => {
 
 	return (
 		<DataContext.Provider value={{
+			user,
+			loggedin,
+			afterLogin,
+			afterLogout,
 			activeTab,
 			setActiveTab,
 			refresh,

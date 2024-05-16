@@ -75,7 +75,10 @@ const login = async (req, res) => {
             return res.status(401).json({ message: "Invalid login credentials" })
         }
 
-        const payload = { userid: foundUser._id, role: foundUser.role }
+        const payload = {
+            userid: foundUser._id,
+            role: foundUser.role
+        }
         const accessSecretKey = process.env.JWT_SECRET_KEY
         if (!accessSecretKey) return res.status(500).json({ message: "Missing JWT secret key" });
         const accessToken = jwt.sign(payload, accessSecretKey, { expiresIn: accessTokenExpire })
@@ -90,7 +93,7 @@ const login = async (req, res) => {
             sameSite: "strict" 
         })
 
-        res.status(200).json({ message: "Login successful", accessToken })
+        res.status(200).json({ message: "Login successful", accessToken, user: foundUser })
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Internal server error" })

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { validatePassword } from "../utils/passwordValidation";
 import authService from "../apiservice/authService";
 
 const Signup = () => {
@@ -16,6 +17,8 @@ const Signup = () => {
     const [passwordMessage, setpasswordMessage] = useState('')
     const navigate = useNavigate()
 
+
+
     const handleChange = (e) => {
         const { id, value } = e.target
         setFormData({
@@ -25,9 +28,11 @@ const Signup = () => {
 
         if (id === "confirmPassword" && value !== formData.password) {
             setpasswordMessage("Passwords don't match")
-        } else {
-            setpasswordMessage("")
-        }
+        } else if (id === "password") {
+            validatePassword(value); // Validate password on change
+          } else {
+            setpasswordMessage("");
+          }
     }
 
     const handleSubmit = async (e) => {
@@ -40,11 +45,11 @@ const Signup = () => {
         const { confirmPassword, ...userData } = formData
 
         try {
-            const { status } = await authService.signup(userData); // Destructure response for status
+            const { status, error } = await authService.signup(userData); // Destructure response for status
             if (status) {
                 navigate("/login");
             } else {
-                setMessage("Signup failed. Please try again.");
+                setMessage(error.response.data.message);
             }
         } catch (error) {
             console.error(error);

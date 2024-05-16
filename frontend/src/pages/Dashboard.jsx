@@ -9,6 +9,7 @@ import { useData } from '../contexts/DataContext';
 
 
 const Dashboard = () => {
+    // old style for setting activetab state. needed to pass the state to each tab
     // const [activeTab, setActiveTab] = useState('Dashboard')
     const { activeTab } = useData()
 

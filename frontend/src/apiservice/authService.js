@@ -1,10 +1,14 @@
 import axios from "axios";
+import { useData } from "../contexts/DataContext";
+// import { Navigate } from "react-router-dom"
+
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 class AuthService {
     constructor() {
         this.user = null
+        // this loggedin status should be removed later
         this.isLoggedIn = localStorage.getItem('jwtAccessToken') !== null
     }
 
@@ -14,7 +18,7 @@ class AuthService {
             return { status: true }
         } catch (error) {
             console.error(error);
-            throw new Error("Signup failed")
+            return { status: false, error }
         }
     }
 
@@ -23,21 +27,27 @@ class AuthService {
 
         try {
             const res = await axios.post(`${BASE_URL}/auth/login`, credentials);
-            const { accessToken } = res.data
+            // console.log(res);
+            const { message, accessToken, user } = res.data
             localStorage.setItem("jwtAccessToken", accessToken)
 
-            this.user = res.data.user
+            // const { setUser } = useData()
+            // setUser(user)
+
+            // this.user = user
             this.isLoggedIn = true
 
-            return { status: true }
+            return { status: true, user, message }
         } catch (error) {
             console.error(error);
-            throw new Error("Login failed")
+            return { status: false, error }
         }
     }
 
     logout() {
         localStorage.removeItem("jwtAccessToken")
+        // const { setUser } = useData()
+        // setUser(null)
         this.user = null
         this.isLoggedIn = false
     }
@@ -49,7 +59,7 @@ class AuthService {
     attachTokenToRequest() {
         const accessToken = this.getToken();
         if (!accessToken) {
-
+            // return <Navigate to="/login" replace />
         }
         const config = {
             headers: {
