@@ -7,10 +7,24 @@ const BudgetForm = () => {
     const dataContext = useData()
 	const { refresh } = dataContext
 
+    const getCurrentMonthDates = () => {
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+        const formatToDateInput = (date) => date.toISOString().split('T')[0];
+
+        return {
+            startDate: formatToDateInput(startOfMonth),
+            endDate: formatToDateInput(endOfMonth),
+        };
+    };
+
     const [amount, setAmount] = useState('')
     const [type, setType] = useState('expense')
-    const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0])
-    const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0])
+    // set to start and end date of the month in later version
+    const [startDate, setStartDate] = useState('')
+    const [endDate, setEndDate] = useState('')
 
     const [message, setMessage] = useState('')
 
@@ -37,8 +51,8 @@ const BudgetForm = () => {
         } finally {
             setAmount("")
             setType("")
-            setStartDate(new Date().toISOString().split('T')[0])
-            setEndDate(new Date().toISOString().split('T')[0])
+            setStartDate('')
+            setEndDate('')
 
             setTimeout(() => setMessage(''), 5000)
         }
