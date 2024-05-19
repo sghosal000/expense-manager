@@ -3,10 +3,13 @@ import transactionService from '../../apiservice/transactionService'
 import budgetService from '../../apiservice/budgetService'
 import LoadingDashboard from "../loading/LoadingDashboard"
 import TransactionsTable from '../tables/TransactionsTable'
-// import
+
+import { useData } from '../../contexts/DataContext'
 
 
-const DashboardTab = ({ activeTab }) => {
+const DashboardTab = () => {
+    const { activeTab } = useData()
+
     const [transactions, setTransactions] = useState([])
     const [budgets, setBudgets] = useState([])
     const [loading, setLoading] = useState(true)
@@ -57,6 +60,12 @@ const DashboardTab = ({ activeTab }) => {
 
     return (
         <div className="flex flex-col space-y-2 md:flex-row md:space-x-6">
+            {/* <div className='w-full md:w-2/3 h-72 md:h-auto flex flex-col justify-around'>
+				{ expenseStatus && <ProgressBar data={expenseStatus} refresh={refresh} />}
+				{ !expenseStatus && <p className='text-lg text-txt-depressed'>No Expense goal has been set yet.<br /> Try adding a goal this month for better managing your finance</p> }
+				{ investStatus && <ProgressBar data={investStatus} refresh={refresh} />}
+				{ !investStatus && <p className='text-lg text-txt-depressed'>No Investment goal has been set yet.<br /> Try adding a goal this month for better managing your finance</p> }
+			</div> */}
             <div className="w-full md:w-2/3">
                 <TransactionsTable data={transactions} refresh={refresh} />
             </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../apiservice/authService";
+import { useData } from "../contexts/DataContext";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -8,15 +9,18 @@ const Login = () => {
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
+    const { afterLogin } = useData()
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const { status } = await authService.login(username, password);
+            const { status, user, error } = await authService.login(username, password);
             if (status) {
-                navigate("/Dashboard");
+                afterLogin(user)
+                navigate("/")
             } else {
-                setMessage("Invalid username or password");
+                setMessage(error.response.data.message);
             }
         } catch (error) {
             console.error(error);
@@ -24,6 +28,8 @@ const Login = () => {
         } finally {
             setUsername("")
             setPassword("")
+
+            setTimeout(() => setMessage(''), 5000)
         }
     }
 
@@ -92,7 +98,7 @@ const Login = () => {
                     </div>
                     <button
                         type="submit"
-                        className="flex w-full justify-center rounded-md bg-accent hover:bg-sky-600 font-semibold leading-6 py-2 px-3 shadow-md transition-all"
+                        className="form-submit"
                     >
                         Sign in
                     </button>

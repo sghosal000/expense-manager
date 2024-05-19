@@ -1,11 +1,30 @@
 import React, { useState } from 'react'
 import budgetService from '../../apiservice/budgetService'
 
-const BudgetForm = ({ refresh }) => {
+import { useData } from '../../contexts/DataContext'
+
+const BudgetForm = () => {
+    const dataContext = useData()
+	const { refresh } = dataContext
+
+    const getCurrentMonthDates = () => {
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+        const formatToDateInput = (date) => date.toISOString().split('T')[0];
+
+        return {
+            startDate: formatToDateInput(startOfMonth),
+            endDate: formatToDateInput(endOfMonth),
+        };
+    };
+
     const [amount, setAmount] = useState('')
-    const [type, setType] = useState('')
-    const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0])
-    const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0])
+    const [type, setType] = useState('expense')
+    // set to start and end date of the month in later version
+    const [startDate, setStartDate] = useState('')
+    const [endDate, setEndDate] = useState('')
 
     const [message, setMessage] = useState('')
 
@@ -21,24 +40,27 @@ const BudgetForm = ({ refresh }) => {
 
         try {
             const { status } = await budgetService.addBudget(newTransaction)
-            if (res.status) {
+            if (status) {
                 setMessage("Transaction added")
                 refresh()
             }
+            // for !status error won't be thrown, so no error message will be set. check it later
         } catch (error) {
-            console.error(error);
             setMessage("Error.. try again")
+            console.error(error)
         } finally {
             setAmount("")
             setType("")
-            setStartDate(new Date().toISOString().split('T')[0])
-            setEndDate(new Date().toISOString().split('T')[0])
+            setStartDate('')
+            setEndDate('')
+
+            setTimeout(() => setMessage(''), 5000)
         }
     }
 
     return (
         <div className="flex flex-col items-center p-6 bg-base highlight-white rounded-lg">
-            <h1 className="pb-6 text-txt-depressed">Set a new Goal</h1>
+            <h1 className="pb-4 text-txt-depressed">Set a new Goal</h1>
             <form onSubmit={handleSubmit} className="w-full space-y-4">
                 <div className="h-1">
                     <p className={`text-xs ${message.startsWith("Error") ? "text-red" : "text-green"}`}>{message}</p>
@@ -54,17 +76,40 @@ const BudgetForm = ({ refresh }) => {
                         required
                     />
                 </div>
-                <div className="flex flex-row space-x-2">
-                    <select
-                        id="type"
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                        className="form-field"
-                        required
-                    >
-                        <option value="expense">Expense</option>
-                        <option value="investment">Investment</option>
-                    </select>
+                <div className="flex w-full space-x-4">
+                    <div className='w-1/2'>
+                        <input
+                            type="radio"
+                            id="expense"
+                            name="type"
+                            value="expense"
+                            onChange={(e) => setType(e.target.value)}
+                            className="peer hidden"
+                            checked
+                        />
+                        <label
+                            htmlFor="expense"
+                            className='form-label highlight-white cursor-pointer select-none rounded-full py-2 text-center peer-checked:bg-neutral peer-checked:font-bold peer-checked:text-sky-300 transition-all'
+                        >
+                            Expense
+                        </label>
+                    </div>
+                    <div className='w-1/2'>
+                        <input
+                            type="radio"
+                            id="investment"
+                            name="type"
+                            value="investment"
+                            onChange={(e) => setType(e.target.value)}
+                            className='peer hidden'
+                        />
+                        <label
+                            htmlFor="investment"
+                            className='form-label highlight-white cursor-pointer select-none rounded-full py-2 text-center peer-checked:bg-neutral peer-checked:font-bold peer-checked:text-sky-300 transition-all'
+                        >
+                            Investment
+                        </label>
+                    </div>
                 </div>
                 <div className='flex space-x-2'>
                     <div className='w-1/2'>

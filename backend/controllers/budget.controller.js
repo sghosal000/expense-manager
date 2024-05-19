@@ -22,9 +22,9 @@ const createBudget = async (req, res) => {
         const budgetStartDate = startDate ? new Date(startDate) : today
         const budgetEndDate = endDate ? new Date(endDate) : new Date(budgetStartDate.getFullYear(), budgetStartDate.getMonth() + 1, 0)
 
-        if (budgetStartDate < today || budgetStartDate > new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())) {
-            return res.status(400).json({ message: "start date should be after current date and less than one year" })
-        }
+        // if (budgetStartDate < today || budgetStartDate > new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())) {
+        //     return res.status(400).json({ message: "start date should be after current date and less than one year" })
+        // }
         if (budgetEndDate > new Date(budgetStartDate.getFullYear() + 1, budgetStartDate.getMonth(), budgetStartDate.getDate())) {
             return res.status(400).json({ message: "end date should be less than one year" })
         }
@@ -77,10 +77,10 @@ const getBudgetStatus = async (req, res) => {
         const type = req.query.type
         const budget = await Budget.findOne({ userid, type })
         if (!budget) {
-            return res.status(404).json({ message: `no ${type} budget exists` })
+            return res.status(200).json()
         }
 
-        const { startDate, endDate } = budget
+        const { _id, startDate, endDate } = budget
         const sumAmount = await Transaction.aggregate([
             {
                 $match: {
@@ -103,7 +103,14 @@ const getBudgetStatus = async (req, res) => {
 
         const totalSpent = sumAmount.length > 0 ? sumAmount[0].totalAmount : 0
 
-        res.status(200).json({ type, totalSpent, goal: budget.amount })
+        res.status(200).json({
+            _id,
+            type,
+            startDate: startDate.toLocaleDateString(),
+            endDate: endDate.toLocaleDateString(),
+            totalSpent,
+            goal: budget.amount
+        })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });

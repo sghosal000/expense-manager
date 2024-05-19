@@ -2,7 +2,7 @@ import React from 'react';
 
 const Home = (loggedin) => {
   return (
-    <div className="flex flex-col items-center justify-center background text-txt mt-5">
+    <div className="flex flex-col items-center justify-center background text-txt pt-5">
       {/* Header */}
       <header className="text-center">
         <h1 className="text-4xl font-bold mb-4">Welcome to Trackit</h1>
