@@ -87,13 +87,49 @@ const login = async (req, res) => {
         if (!refreshSecretKey) return res.status(500).json({ message: "Missing JWT refresh secret key" });
         const refreshToken = jwt.sign(payload, refreshSecretKey, { expiresIn: refreshTokenExpire })
 
+        const userData = {
+            username: foundUser.username,
+            fname: foundUser.fname,
+        }
+        res.cookie("userData", JSON.stringify(userData), {
+            httpOnly: false,
+            secure: false,
+            sameSite: "strict" 
+        })
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false, // make this true for https only site access in deployment
             sameSite: "strict" 
         })
 
-        res.status(200).json({ message: "Login successful", accessToken, user: foundUser })
+        res.status(200).json({ message: "Login successful", accessToken, user: userData })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error" })
+    }
+}
+
+const getDetails = async (req, res) => {
+    try {
+        const userid = req.user.userid
+        if (!userid) {
+            return res.status(401).json({ message: 'Unauthorized' })
+        }
+
+        const foundUser = await User.findOne({ _id: userid })
+        if(!foundUser){
+            return res.status(404).json({ message: "User not found" })
+        }
+
+        const userData = {
+            username: foundUser.username,
+            fname: foundUser.fname,
+            lname: foundUser.lname,
+            email: foundUser.email,
+            age: foundUser.age, 
+        }
+        
+        res.status(200).json({ userData })
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Internal server error" })
@@ -140,5 +176,6 @@ const refreshToken = async (req, res) => {
 module.exports = {
     signup,
     login,
+    getDetails,
     refreshToken,
 }

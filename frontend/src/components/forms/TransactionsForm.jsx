@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import transactionService from '../../apiservice/transactionService'
+import { useData } from '../../contexts/DataContext';
 
 
-export default function TransactionForm({ type, refresh }) {
+export default function TransactionForm({ type }) {
+    const { refresh } = useData()
+    
     const [amount, setAmount] = useState('')
     const [category, setCategory] = useState('')
     const [date, setDate] = useState('')

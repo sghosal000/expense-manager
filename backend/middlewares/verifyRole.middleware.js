@@ -17,11 +17,11 @@ const verifyRole = (roles) => (req, res, next) => {
         if(!roles.includes(decoded.role)){
             return res.status(403).json({ message: "Forbidden: insufficient permission" })
         }
+        next()
     } catch (error) {
         console.log(error);
         return res.status(401).json({ message: "Unauthorized" })
     }
-    next()
 }
 
 module.exports = verifyRole

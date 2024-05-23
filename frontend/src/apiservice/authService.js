@@ -52,6 +52,16 @@ class AuthService {
         this.isLoggedIn = false
     }
 
+    async getDetails() {
+        try {
+            const res = await axios.get(`${BASE_URL}/auth/details`, this.attachTokenToRequest())
+            return {status: true, data: res.data}
+        } catch (error) {
+            console.error(error);
+            return { status: false, error }
+        }
+    }
+
     getToken() {
         return localStorage.getItem("jwtAccessToken");
     }

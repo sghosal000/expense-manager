@@ -7,9 +7,10 @@ const {
 } = require("../controllers/recurringTransaction.controller")
 
 const recurringTransactionRouter = express.Router()
+recurringTransactionRouter.use(getUser())
 
-recurringTransactionRouter.post('/add', getUser, createRecurringTransaction)
-recurringTransactionRouter.get('/', getUser, getRecurringTransactions)
-recurringTransactionRouter.delete('/delete/:id', getUser, deleteRecurringTransactionById)
+recurringTransactionRouter.post('/add', createRecurringTransaction)
+recurringTransactionRouter.get('/', getRecurringTransactions)
+recurringTransactionRouter.delete('/delete/:id', deleteRecurringTransactionById)
 
 module.exports = recurringTransactionRouter

@@ -8,10 +8,11 @@ const {
 } = require("../controllers/budget.controller")
 
 const budgetRouter = express.Router()
+budgetRouter.use(getUser())
 
-budgetRouter.post('/add', getUser, createBudget)
-budgetRouter.get('/', getUser, getBudgets)
-budgetRouter.get('/status', getUser, getBudgetStatus)
-budgetRouter.delete('/delete/:id', getUser, deleteBudgetById)
+budgetRouter.post('/add', createBudget)
+budgetRouter.get('/', getBudgets)
+budgetRouter.get('/status', getBudgetStatus)
+budgetRouter.delete('/delete/:id', deleteBudgetById)
 
 module.exports = budgetRouter

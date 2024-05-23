@@ -131,6 +131,12 @@ const DoughnutChart = ({ amountByType }) => {
 		"#df626a",
 		"#d43d51",
 	]
+
+	const options = {
+		maintainAspectRatio: false,
+		// animation
+	}
+
 	const data = {
 		labels: Object.keys(amountByType),
 		datasets: [
@@ -150,7 +156,7 @@ const DoughnutChart = ({ amountByType }) => {
 			},
 		],
 	}
-	return <Doughnut data={data} />
+	return <Doughnut options={options} data={data} />
 }
 
 export default DoughnutChart;

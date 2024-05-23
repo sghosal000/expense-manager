@@ -9,6 +9,10 @@ class TransactionService {
         return apiRequest.get(`/transactions/forMonth?month=${month}&type=${type}`)
     }
 
+    getTotalTransactionsForMonth(month) {
+        return apiRequest.get(`/transactions/totalForMonth?month=${month}`)
+    }
+
     getTransactionsCategoryWise(type, month) {
         return apiRequest.get(`/transactions/categoryWise?month=${month}&type=${type}`)
     }

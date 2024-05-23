@@ -1,3 +1,4 @@
+const mongoose = require("mongoose")
 const Transaction = require("../models/transaction.model")
 const Category = require("../models/category.model")
 const User = require("../models/user.model")
@@ -53,6 +54,7 @@ const createTransaction = async (req, res) => {
     }
 }
 
+// This returns all the transactions. if type is mentioned in query it will find only that type of transactions
 const getTransactions = async (req, res) => {
     try {
         const userid = req.user.userid
@@ -84,6 +86,8 @@ const getTransactions = async (req, res) => {
     }
 }
 
+// This returns the total transactions daywise for a month given in query (current month if blank)
+// NOTE: type should be mentioned in query
 const getDailyTransactions = async (req, res) => {
     try {
         const userid = req.user.userid;
@@ -131,6 +135,60 @@ const getDailyTransactions = async (req, res) => {
     }
 }
 
+// This returns the total transactions of each type in a month(given in query)
+const getTotalofMonth = async (req, res) => {
+    try {
+        const userid = req.user.userid;
+        if (!userid) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        let { month } = req.query;
+        if (!month) {
+            month = new Date().getMonth() + 1
+        }
+
+        const year = new Date().getFullYear()
+        const startDate = new Date(year, month - 1, 1)
+        const endDate = new Date(year, month, 0)
+
+        const sumAmount = await Transaction.aggregate([
+            {
+                $match: {
+                    $and: [
+                        // bhai yaad rakhna ye, $match takes only one argumentand convert string to object id
+                        { userid: new mongoose.Types.ObjectId(String(userid)) },
+                        { createdAt: { $gte: startDate, $lte: endDate } }
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: '$type',
+                    totalAmount: { $sum: "$amount" },
+
+                }
+            }
+        ])
+        
+        let totalOfMonth = {
+            income: 0,
+            expense: 0,
+            investment: 0,
+        }
+
+        sumAmount.map((transaction) => {
+            totalOfMonth[transaction._id] = transaction.totalAmount
+        })
+
+        res.status(200).json({ totalOfMonth });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+// This returns total transactions category wise for a month. same constraints as previous ones
 const getTransactionsCategoryWise = async (req, res) => {
     try {
         const userid = req.user.userid;
@@ -158,11 +216,14 @@ const getTransactionsCategoryWise = async (req, res) => {
 
         const transactions = await Transaction.find(query).populate('categoryid', 'name');
 
-        const transactionsByCategory = transactions.reduce((acc, transaction) => {
+        let transactionsByCategory = transactions.reduce((acc, transaction) => {
             const categoryName = transaction.categoryid.name;
             acc[categoryName] = (acc[categoryName] || 0) + transaction.amount;
             return acc;
         }, {});
+
+        // sorting the object by converting it to an array then sorting and again converting back to object
+        transactionsByCategory = Object.fromEntries(Object.entries(transactionsByCategory).sort(([,a], [,b]) => b-a))
 
         res.status(200).json({ transactionsByCategory });
     } catch (error) {
@@ -193,6 +254,7 @@ module.exports = {
     createTransaction,
     getTransactions,
     getDailyTransactions,
+    getTotalofMonth,
     getTransactionsCategoryWise,
     deleteTransactionById,
 }

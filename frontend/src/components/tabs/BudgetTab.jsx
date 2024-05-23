@@ -1,14 +1,45 @@
 import React, { useState, useEffect } from 'react'
-// import budgetService from '../../apiservice/budgetService'
+import budgetService from '../../apiservice/budgetService'
 import BudgetForm from '../forms/BudgetForm'
 import { ProgressBar } from '../charts/ProgressBar'
-import LoadingDashboard from '../loading/LoadingDashboard'
 
 import { useData } from '../../contexts/DataContext'
 
 const BudgetTab = () => {
 	const dataContext = useData()
-	const { refresh, errorMessage, expenseStatus, investStatus } = dataContext
+	const { activeTab, trigger } = dataContext
+
+	const [expenseStatus, setExpenseStatus] = useState({})
+	const [investStatus, setInvestStatus] = useState({})
+	
+	const [loading, setLoading] = useState(true)
+	const [errorMessage, setErrorMessage] = useState('')
+
+	const fetchData = async () => {
+		setLoading(true)
+
+		try {
+			const resExp = await budgetService.getBudgetStatus("expense")
+			const resInv = await budgetService.getBudgetStatus("investment")
+			if (!resExp.status || !resInv.status) {
+				throw error(result.error)
+			}
+
+			setExpenseStatus(resExp.data)
+			setInvestStatus(resInv.data)
+			setErrorMessage(null)
+		} catch (error) {
+			console.error(error)
+			setErrorMessage("Error Loading Data. Please try again later...")
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	useEffect(() => {
+	  fetchData()
+	}, [activeTab, trigger])
+	
 
 	if (errorMessage) {
 		return (

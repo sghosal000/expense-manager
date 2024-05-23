@@ -8,29 +8,42 @@ import DoughnutChart from '../charts/PieChart'
 import { useData } from '../../contexts/DataContext'
 
 const TransactionsTab = ({ type }) => {
-	const { activeTab } = useData()
+	const { activeTab, trigger } = useData()
 
 	const [transactions, setTransactions] = useState([])
 	const [transactionsMonth, setTransactionsMonth] = useState({})
+	// const [totalTransaction, setTotalTransaction] = useState({})
 	const [transactionsByCategory, setTransactionsByCategory] = useState({})
+
 	const [loading, setLoading] = useState(true)
-	const [trigger, setTrigger] = useState(false)
 	const [errorMessage, setErrorMessage] = useState(null)
 
 	const fetchData = async () => {
 		setLoading(true)
 
 		try {
-			const result = await transactionService.getTransactions(type)
-			const result1 = await transactionService.getTransactionsForMonth(type, "")
-			const result2 = await transactionService.getTransactionsCategoryWise(type, "")
-			if (!result.status || !result1.status || !result2.status) {
-				throw error(result.error)
-			}
+			const resTransaction = await transactionService.getTransactions(type)
+			const resTransactionsForMonth = await transactionService.getTransactionsForMonth(type, "")
+            // const resTotalTransaction = await transactionService.getTotalTransactionsForMonth("")
+			const resTransactionsByCategory = await transactionService.getTransactionsCategoryWise(type, "")
 
-			setTransactions(result.data.transactions)
-			setTransactionsMonth(result1.data.dailyTransactions)
-			setTransactionsByCategory(result2.data.transactionsByCategory)
+			if (!resTransaction.status) {
+				throw error(resTransaction.error)
+			}
+			if(!resTransactionsForMonth.status){
+				throw error(resTransactionsForMonth.error)
+			}
+            // if(!resTotalTransaction.status){
+            //     throw error(resTotalTransaction.error)
+            // }
+            if(!resTransactionsByCategory.status){
+                throw error(resTransactionsByCategory.error)
+            }
+
+			setTransactions(resTransaction.data.transactions)
+			setTransactionsMonth(resTransactionsForMonth.data.dailyTransactions)
+            // setTotalTransaction(resTotalTransaction.data.totalOfMonth)
+			setTransactionsByCategory(resTransactionsByCategory.data.transactionsByCategory)
 			setErrorMessage(null)
 		} catch (error) {
 			console.error(error)
@@ -39,10 +52,6 @@ const TransactionsTab = ({ type }) => {
 		finally {
 			setLoading(false)
 		}
-	}
-
-	const refresh = () => {
-		setTrigger(!trigger)
 	}
 
 	useEffect(() => {
@@ -59,7 +68,7 @@ const TransactionsTab = ({ type }) => {
 		<div className='flex flex-col space-y-2'>
 			<div className="flex flex-col space-y-2 md:flex-row md:space-x-6">
 				<div className="w-full md:w-1/3">
-					<TransactionForm type={type} refresh={refresh} />
+					<TransactionForm type={type} />
 				</div>
 				<div className="w-full h-auto md:w-2/3 md:h-auto">
 					<LineChart data={transactionsMonth} />
@@ -67,7 +76,7 @@ const TransactionsTab = ({ type }) => {
 			</div>
 			<div className="flex flex-col space-y-2 md:flex-row md:space-x-6 md:h-80">
 				<div className="w-full h-full md:w-2/3 md:text-xs">
-					<TransactionsTable data={transactions} refresh={refresh} />
+					<TransactionsTable data={transactions} />
 				</div>
 				<div className='w-full h-auto flex justify-center md:w-1/3'>
 					<DoughnutChart amountByType={transactionsByCategory} />

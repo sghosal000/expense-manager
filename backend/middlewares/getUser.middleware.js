@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const { isBlacklisted } = require("../utils/blockToken.utils")
 
-const getUser = async (req, res, next) => {
+const getUser = () => (req, res, next) => {
     try {
         const token = req.headers.authorization?.split(' ')[1]
 

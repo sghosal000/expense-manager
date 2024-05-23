@@ -1,7 +1,10 @@
 import React from 'react'
 import transactionService from '../../apiservice/transactionService'
+import { useData } from '../../contexts/DataContext'
 
-const TransactionsTable = ({ data, refresh }) => {
+const TransactionsTable = ({ data }) => {
+    const { refresh } = useData()
+    
     const handleDelete = async (id) => {
         try {
             const res = await transactionService.deleteTransaction(id)
@@ -35,7 +38,7 @@ const TransactionsTable = ({ data, refresh }) => {
                                 <p className='text-xs text-txt-depressed'>Note: {transaction.note}</p>
                             </td>
                             <td className="table-data w-2/12">{transaction.createdAt}</td>
-                            <td className={`table-data ${transaction.type === "income" ? "text-green" : transaction.type === "expense" ? "text-red" : "text-cyan"} w-2/12`}>{transaction.amount}</td>
+                            <td className={`table-data ${transaction.type === "income" ? "text-light-green" : transaction.type === "expense" ? "text-light-red" : "text-light-cyan"} w-2/12`}>{transaction.amount}</td>
                             {/* <td className="table-data w-3/12"></td> */}
                             <td className="table-data w-2/12">{transaction.isRecurring ? "Yes" : "No"}</td>
                             <td className="table-data text-accent w-2/12 space-x-4">

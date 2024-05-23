@@ -1,36 +1,56 @@
 import React, { useState, useEffect } from 'react'
+import authService from '../../apiservice/authService'
 import transactionService from '../../apiservice/transactionService'
-import budgetService from '../../apiservice/budgetService'
 import LoadingDashboard from "../loading/LoadingDashboard"
+import ProfileCard from '../ProfileCard'
 import TransactionsTable from '../tables/TransactionsTable'
 
 import { useData } from '../../contexts/DataContext'
 
 
 const DashboardTab = () => {
-    const { activeTab } = useData()
+    const { activeTab, trigger } = useData()
 
+    const [user, setUser] = useState({})
     const [transactions, setTransactions] = useState([])
-    const [budgets, setBudgets] = useState([])
+	const [transactionsMonth, setTransactionsMonth] = useState({})
+    const [totalTransaction, setTotalTransaction] = useState({})
+    const [transactionsByCategory, setTransactionsByCategory] = useState({})
+
     const [loading, setLoading] = useState(true)
-	const [trigger, setTrigger] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
     const fetchData = async () => {
         setLoading(true)
 
         try {
-            const resultTransaction = await transactionService.getTransactions("")
-            const resultBudget = await budgetService.getBudgets("")
+            const resUser = await authService.getDetails()
+            const resTransaction = await transactionService.getTransactions("")
+            const resTransactionsForMonth = await transactionService.getTransactionsForMonth("income", "")
+            const resTotalTransaction = await transactionService.getTotalTransactionsForMonth("")
+            const resTransactionsByCategory = await transactionService.getTransactionsCategoryWise("expense", "")
 
-            if (!resultTransaction.status) {
-                throw error(resultTransaction.error)
+            if (!resUser.status) {
+                throw error(resUser.error)
             }
-            if (!resultBudget.status) {
-                throw error(resultBudget.error)
+            if (!resTransaction.status) {
+                throw error(resTransaction.error)
             }
-            setTransactions(resultTransaction.data.transactions)
-            setBudgets(resultBudget.data.budgets)
+			if(!resTransactionsForMonth.status){
+				throw error(resTransactionsForMonth.error)
+			}
+            if(!resTotalTransaction.status){
+                throw error(resTotalTransaction.error)
+            }
+            if(!resTransactionsByCategory.status){
+                throw error(resTransactionsByCategory.error)
+            }
+
+            setUser(resUser.data.userData)
+            setTransactions(resTransaction.data.transactions)
+			setTransactionsMonth(resTransactionsForMonth.data.dailyTransactions)
+            setTotalTransaction(resTotalTransaction.data.totalOfMonth)
+            setTransactionsByCategory(resTransactionsByCategory.data.transactionsByCategory)
             setErrorMessage(null)
         } catch (error) {
             console.error(error)
@@ -39,10 +59,6 @@ const DashboardTab = () => {
             setLoading(false)
         }
     }
-
-    const refresh = () => {
-		setTrigger(!trigger)
-	}
 
     useEffect(() => {
         fetchData()
@@ -59,17 +75,17 @@ const DashboardTab = () => {
     }
 
     return (
-        <div className="flex flex-col space-y-2 md:flex-row md:space-x-6">
-            {/* <div className='w-full md:w-2/3 h-72 md:h-auto flex flex-col justify-around'>
-				{ expenseStatus && <ProgressBar data={expenseStatus} refresh={refresh} />}
-				{ !expenseStatus && <p className='text-lg text-txt-depressed'>No Expense goal has been set yet.<br /> Try adding a goal this month for better managing your finance</p> }
-				{ investStatus && <ProgressBar data={investStatus} refresh={refresh} />}
-				{ !investStatus && <p className='text-lg text-txt-depressed'>No Investment goal has been set yet.<br /> Try adding a goal this month for better managing your finance</p> }
-			</div> */}
-            <div className="w-full md:w-2/3">
-                <TransactionsTable data={transactions} refresh={refresh} />
+        <div className='flex flex-col space-y-2'>
+            <div className="flex flex-col space-y-2 md:flex-row md:space-x-6">
+                <div className='w-full md:w-1/3'>
+                    <ProfileCard user={user} totalTransaction={totalTransaction} transactionsByCategory={Object.entries(transactionsByCategory).slice(0, 5)} />
+                </div>
+                <div className="-full h-full md:w-2/3 md:text-xs">
+                    <TransactionsTable data={transactions} />
+                </div>
             </div>
-        </div>)
+        </div>
+    )
 }
 
 export default DashboardTab

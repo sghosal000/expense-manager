@@ -18,7 +18,6 @@ const {
 const verifyRole = require("../middlewares/verifyRole.middleware")
 
 const adminRouter = express.Router()
-
 adminRouter.use(verifyRole(['admin']))
 
 adminRouter.get('/users', getAllUsers)

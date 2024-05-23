@@ -12,9 +12,9 @@ export const ProgressBar = ({ data }) => {
 
 	let color = ''
 	if (data.type === 'expense'){
-		color = progress >= 80 ? "bg-red" : "bg-teal-500"
+		color = progress >= 80 ? "bg-light-red" : "bg-teal-500"
 	} else {
-		color = progress <= 60 ? "bg-red" : "bg-teal-500"
+		color = progress <= 60 ? "bg-light-red" : "bg-teal-500"
 	}
 	
 	const handleDelete = async () => {
