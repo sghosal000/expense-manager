@@ -2,6 +2,10 @@ const express = require("express")
 const cors = require('cors')
 const cookies = require("cookie-parser")
 
+const { logger } = require('./middlewares/logger.middleware')
+const { errorHandler } = require('./middlewares/errorHandler.middleware')
+const corsOptions = require('./config/corsOptions')
+
 const dbConnect = require("./db/db.config")
 const authRouter = require("./routes/auth.routes")
 const adminRouter = require("./routes/admin.routes")
@@ -14,9 +18,11 @@ const { createScheduledTransaction } = require("./utils/addScheduledTransaction.
 
 const app = express()
 
+app.use(logger)
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(cookies())
 
 app.use('/auth', authRouter)
@@ -41,6 +47,7 @@ try {
     console.log(error);
 }
 
+app.use(errorHandler)
 dbConnect()
 const port = process.env.PORT || 5000
 app.listen(port, () => console.log(`Listening on http://localhost:${port}`))
