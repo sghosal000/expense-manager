@@ -95,13 +95,13 @@ const login = async (req, res) => {
             httpOnly: false,
             secure: false,
             // sameSite: "strict" 
-            sameSite: "None" 
+            sameSite: "Lax" 
         })
         res.cookie("refreshToken", refreshToken, {
             httpOnly: false,
             secure: false, // make this true for https only site access in deployment
             // sameSite: "strict" 
-            sameSite: "None" 
+            sameSite: "Lax" 
         })
 
         res.status(200).json({ message: "Login successful", accessToken, user: userData })
@@ -109,6 +109,25 @@ const login = async (req, res) => {
         console.log(error);
         res.status(500).json({ message: "Internal server error" })
     }
+}
+
+const logout = (req, res) => {
+    const cookies = req.cookies
+    if(!cookies?.refreshToken){
+        return res.status(204).json({ message: "no jwt cookie" })
+    }
+    
+    res.clearCookie('refreshToken', {
+        httpOnly: false,
+        secure: false,
+        sameSite: 'None'
+    })
+    res.clearCookie('userData', {
+        httpOnly: false,
+        secure: false,
+        sameSite: 'None'
+    })
+    res.status(200).json({ message: 'logged out' })
 }
 
 const getDetails = async (req, res) => {
@@ -143,7 +162,6 @@ const getDetails = async (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         const refreshToken = req.cookies?.refreshToken
-        console.log('cookies: ', req.cookies);
         // const userid = req.user.userid
         if(!refreshToken) return res.status(401).json({ message: "no refresh token found" })
 
@@ -184,6 +202,7 @@ const refreshToken = async (req, res) => {
 module.exports = {
     signup,
     login,
+    logout,
     getDetails,
     refreshToken,
 }
