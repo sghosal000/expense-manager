@@ -6,12 +6,13 @@ import BudgetTab from '../components/tabs/BudgetTab';
 import RecurringTab from '../components/tabs/RecurringTab';
 
 import { useData } from '../contexts/DataContext';
+import useRefreshToken from '../hooks/UseRefreshToken';
 
 
 const Dashboard = () => {
-    // old style for setting activetab state. needed to pass the state to each tab
-    // const [activeTab, setActiveTab] = useState('Dashboard')
     const { activeTab } = useData()
+    const refresh = useRefreshToken()
+    refresh()
 
     const tabs = [
         { name: 'Dashboard', link: '#' },

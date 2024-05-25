@@ -16,21 +16,16 @@ import Demo from './pages/Demo'
 function App() {
 	const router = createBrowserRouter([
 		{
-			path: "/",
-			element: <Layout />,
+			path: "/", element: <Layout />,
 			children: [
 				{ path: "/", element: <Home /> },
 				{ path: "/login", element: <Login /> },
 				{ path: "/signup", element: <Signup /> },
 				{ 
-					path: "/dashboard",
-					// element: <PrivateRoute children={<Dashboard />} /> // this also works fine
-					element: (
-						<PrivateRoute>
-							<Dashboard />
-							
-						</PrivateRoute>
-					)
+					element: <PrivateRoute />,
+					children: [
+						{ path: "/dashboard", element: <Dashboard />}
+					]
 				},
 				{ path: "/demo", element: <Demo /> },
 				

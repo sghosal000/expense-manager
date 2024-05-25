@@ -6,7 +6,7 @@ const passwordValidation = {
     requireSpecialCharacter: true,
 };
 
-export const validatePassword = (password) => {
+export const validatePassword = (password, setPasswordMessage) => {
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);

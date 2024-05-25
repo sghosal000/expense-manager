@@ -23,7 +23,7 @@ const getUser = () => (req, res, next) => {
         next()
     } catch (error) {
         if(error.name === "TokenExpiredError") {
-            return res.status(401).json({ message: "token expired" })
+            return res.status(403).json({ message: "token expired" })
         }
         return res.status(401).json({ message: "unauthorized" }) 
     }

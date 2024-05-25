@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../apiservice/authService";
-import { useData } from "../contexts/DataContext";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -9,22 +9,30 @@ const Login = () => {
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
-    const { afterLogin } = useData()
+    const { afterLogin } = useAuth()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const { status, user, error } = await authService.login(username, password);
-            if (status) {
-                afterLogin(user)
+            const response = await authService.login(username, password);
+            if (response.status) {
+                afterLogin(response.data)
                 navigate("/")
             } else {
-                setMessage(error.response.data.message);
+                setMessage(response.error.response.data.message);
             }
         } catch (error) {
-            console.error(error);
-            setMessage("Login failed. Try again...");
+            // console.error(error)
+            if (!err.response){
+                setMessage('No Server response')
+            } else if (err.response.status === 400){
+                setMessage('Missing required fields')
+            } else if (err.response.status === 401) {
+                setMessage('Invalid Login credentials')
+            } else {
+                setMessage("Login failed. Try again...");
+            }
         } finally {
             setUsername("")
             setPassword("")
@@ -58,7 +66,7 @@ const Login = () => {
                         </h2>
                     </div>
                     <div className="h-1">
-                        <p className="text-center text-xs text-red">{message}</p>
+                        <p className="text-center text-xs text-light-red">{message}</p>
                     </div>
                     <div>
                         <label htmlFor="username" className="form-label">User ID</label>

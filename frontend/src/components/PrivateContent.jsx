@@ -1,12 +1,13 @@
-import React from "react"
-import { Navigate } from "react-router-dom"
-import { useData } from "../contexts/DataContext"
+import { Navigate, useLocation, Outlet } from "react-router-dom"
+import useAuth from "../hooks/useAuth"
 
+export default function PrivateRoute() {
+    const { user } = useAuth()
+    const location = useLocation()
+    console.log(user);
 
-export default function PrivateRoute({ children }) {
-    const { loggedin } = useData()
-    if(!loggedin){
-        return <Navigate to="/login" replace />
-    }
-    return children
+    return (
+        user?.username? <Outlet />
+        : <Navigate to={"/login"} state={{from: location}} replace />
+    )
 }

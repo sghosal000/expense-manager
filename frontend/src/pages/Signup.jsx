@@ -29,10 +29,10 @@ const Signup = () => {
         if (id === "confirmPassword" && value !== formData.password) {
             setpasswordMessage("Passwords don't match")
         } else if (id === "password") {
-            validatePassword(value); // Validate password on change
-          } else {
+            validatePassword(value, setpasswordMessage); // Validate password on change
+        } else {
             setpasswordMessage("");
-          }
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -87,7 +87,7 @@ const Signup = () => {
                         </h2>
                     </div>
                     <div className="h-1">
-                        <p className="text-center text-xs text-red">{message}</p>
+                        <p className="text-center text-xs text-light-red">{message}</p>
                     </div>
                     <div>
                         <label htmlFor="username" className="form-label">Username</label>
@@ -139,7 +139,7 @@ const Signup = () => {
                                 required
                             />
                             <div className="h-1">
-                                {passwordMessage && <p className="text-xs text-red">{passwordMessage}</p>}
+                                {passwordMessage && <p className="text-xs text-light-red">{passwordMessage}</p>}
                             </div>
                         </div>
                     </div>

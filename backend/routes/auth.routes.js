@@ -13,6 +13,6 @@ const authRouter = express.Router()
 authRouter.post('/signup', signup)
 authRouter.post('/login', login)
 authRouter.get('/details', getUser(), getDetails)
-authRouter.post('/refreshToken', refreshToken)
+authRouter.get('/refreshToken', refreshToken)
 
 module.exports = authRouter

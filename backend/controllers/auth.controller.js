@@ -94,12 +94,14 @@ const login = async (req, res) => {
         res.cookie("userData", JSON.stringify(userData), {
             httpOnly: false,
             secure: false,
-            sameSite: "strict" 
+            // sameSite: "strict" 
+            sameSite: "None" 
         })
         res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
+            httpOnly: false,
             secure: false, // make this true for https only site access in deployment
-            sameSite: "strict" 
+            // sameSite: "strict" 
+            sameSite: "None" 
         })
 
         res.status(200).json({ message: "Login successful", accessToken, user: userData })
@@ -141,24 +143,30 @@ const getDetails = async (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         const refreshToken = req.cookies?.refreshToken
+        console.log('cookies: ', req.cookies);
+        // const userid = req.user.userid
         if(!refreshToken) return res.status(401).json({ message: "no refresh token found" })
 
         const refreshSecretKey = process.env.JWT_REFRESH_SECRET_KEY
         jwt.verify(refreshToken, refreshSecretKey, async (error, decoded) => {
             if (error) {
                 if (error.name === "TokenExpiredError") {
-                    return res.status(401).json({ message: "Refresh token expired" });
+                    return res.status(403).json({ message: "Refresh token expired" });
                 } else if (error.name === "JsonWebTokenError") {
                     return res.status(403).json({ message: "Invalid refresh token" });
                 }
                 console.log(error);
                 return res.status(403).json({ message: "Forbidden" })
             }
-            
+
             const foundUser = await User.findById(decoded.userid)
             if (!foundUser) {
                 return res.status(401).json({ message: "Invalid refresh token, user not found" });
             }
+            // someone else other than owner is requesting access token
+            // if(userid !== decoded.userid){
+            //     return res.status(403).json("Forbidden")
+            // }
 
             const payload = { userid: foundUser._id, role: foundUser.role }
             const accessSecretKey = process.env.JWT_SECRET_KEY

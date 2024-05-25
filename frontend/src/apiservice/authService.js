@@ -27,19 +27,12 @@ class AuthService {
 
         try {
             const res = await axios.post(`${BASE_URL}/auth/login`, credentials);
-            // console.log(res);
             const { message, accessToken, user } = res.data
             localStorage.setItem("jwtAccessToken", accessToken)
 
-            // const { setUser } = useData()
-            // setUser(user)
-
-            // this.user = user
-            this.isLoggedIn = true
-
-            return { status: true, user, message }
+            return { status: true, data: res.data }
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             return { status: false, error }
         }
     }

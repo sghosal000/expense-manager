@@ -55,7 +55,7 @@ export default function TransactionForm({ type }) {
             <h1 className="pb-4 text-txt-depressed">Add a new Transaction</h1>
             <form onSubmit={handleSubmit} className="w-full space-y-4">
                 <div className="h-1">
-                    <p className={`text-xs ${message.startsWith("Error") ? "text-red" : "text-green"}`}>{message}</p>
+                    <p className={`text-xs ${message.startsWith("Error") ? "text-light-red" : "text-light-green"}`}>{message}</p>
                 </div>
                 <div>
                     <input
