@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useData } from "../contexts/DataContext";
+// import useAuth from "../hooks/useAuth";
 // import { Navigate } from "react-router-dom"
 
 
@@ -26,7 +26,7 @@ class AuthService {
         const credentials = { id, password };
 
         try {
-            const res = await axios.post(`${BASE_URL}/auth/login`, credentials);
+            const res = await axios.post(`${BASE_URL}/auth/login`, credentials, {withCredentials: true});
             const { message, accessToken, user } = res.data
             localStorage.setItem("jwtAccessToken", accessToken)
 

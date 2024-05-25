@@ -6,7 +6,7 @@ import BudgetTab from '../components/tabs/BudgetTab';
 import RecurringTab from '../components/tabs/RecurringTab';
 
 import { useData } from '../contexts/DataContext';
-import useRefreshToken from '../hooks/UseRefreshToken';
+import useRefreshToken from '../hooks/useRefreshToken';
 
 
 const Dashboard = () => {
