@@ -24,11 +24,11 @@ const Login = () => {
             }
         } catch (error) {
             // console.error(error)
-            if (!err.response){
+            if (!error.response){
                 setMessage('No Server response')
-            } else if (err.response.status === 400){
+            } else if (error.response.status === 400){
                 setMessage('Missing required fields')
-            } else if (err.response.status === 401) {
+            } else if (error.response.status === 401) {
                 setMessage('Invalid Login credentials')
             } else {
                 setMessage("Login failed. Try again...");

@@ -1,4 +1,5 @@
 import axios from "axios"
+import { axiosPrivate } from "./axios"
 import authService from "./authService"
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
@@ -7,7 +8,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 class ApiRequest {
     async get(endpoint) {
         try {
-            const res = await axios.get(`${BASE_URL}${endpoint}`, authService.attachTokenToRequest())
+            const res = await axiosPrivate.get(`${BASE_URL}${endpoint}`, authService.attachTokenToRequest())
             return { status: true, data: res.data }
         } catch (error) {
             console.error(error)
@@ -16,7 +17,7 @@ class ApiRequest {
     }
     async post(endpoint, body) {
         try {
-            const res = await axios.post(`${BASE_URL}${endpoint}`, body, authService.attachTokenToRequest())
+            const res = await axiosPrivate.post(`${BASE_URL}${endpoint}`, body, authService.attachTokenToRequest())
             return { status: true, data: res.data }
         } catch (error) {
             console.error(error)
@@ -25,7 +26,7 @@ class ApiRequest {
     }
     async put(endpoint, body) {
         try {
-            const res = await axios.post(`${BASE_URL}${endpoint}`, body, authService.attachTokenToRequest())
+            const res = await axiosPrivate.post(`${BASE_URL}${endpoint}`, body, authService.attachTokenToRequest())
             return { status: true, data: res.data }
         } catch (error) {
             console.error(error)
@@ -34,7 +35,7 @@ class ApiRequest {
     }
     async delete(endpoint) {
         try {
-            const res = await axios.delete(`${BASE_URL}${endpoint}`, authService.attachTokenToRequest())
+            const res = await axiosPrivate.delete(`${BASE_URL}${endpoint}`, authService.attachTokenToRequest())
             return { status: true, data: res.data }
         } catch (error) {
             console.error(error)

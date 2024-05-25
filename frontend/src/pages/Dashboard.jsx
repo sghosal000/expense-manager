@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import TabNavigation from '../components/TabNavigation';
 import DashboardTab from '../components/tabs/DashboardTab';
 import TransactionsTab from '../components/tabs/TransactionsTab';
@@ -12,7 +12,9 @@ import useRefreshToken from '../hooks/useRefreshToken';
 const Dashboard = () => {
     const { activeTab } = useData()
     const refresh = useRefreshToken()
-    refresh()
+    useEffect(() => {
+        refresh()
+    }, [activeTab])
 
     const tabs = [
         { name: 'Dashboard', link: '#' },

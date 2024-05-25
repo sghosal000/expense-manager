@@ -4,7 +4,6 @@ import useAuth from "../hooks/useAuth"
 export default function PrivateRoute() {
     const { user } = useAuth()
     const location = useLocation()
-    console.log(user);
 
     return (
         user?.username? <Outlet />
