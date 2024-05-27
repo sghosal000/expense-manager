@@ -1,32 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import authService from "../apiservice/authService";
-import useAuth from "../hooks/useAuth";
+import useAuthService from "../apiservice/useAuthService";
 
 const Login = () => {
+    const { login } = useAuthService()
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
-    const { afterLogin } = useAuth()
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await authService.login(username, password);
+            const response = await login(username, password);
             if (response.status) {
-                afterLogin(response.data)
                 navigate("/")
-            } else {
-                setMessage(response.error.response.data.message);
             }
         } catch (error) {
             // console.error(error)
-            if (!error.response){
+            // console.log(error.response.data.message);
+            if (!error.response) {
                 setMessage('No Server response')
-            } else if (error.response.status === 400){
+            } else if (error.response.status === 400) {
                 setMessage('Missing required fields')
             } else if (error.response.status === 401) {
                 setMessage('Invalid Login credentials')
@@ -112,7 +109,7 @@ const Login = () => {
                     </button>
                     <p className="mt-10 text-center text-sm text-txt-depressed">
                         Don't have an account?{' '}
-                        <a href="#" className="font-semibold leading-6 text-accent hover:text-sky-600">Sign up</a>
+                        <a href="/signup" className="font-semibold leading-6 text-accent hover:text-sky-600">Sign up</a>
                     </p>
                 </form>
             </div >

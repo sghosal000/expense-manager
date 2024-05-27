@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import budgetService from '../../apiservice/budgetService'
+import useBudgetService from '../../apiservice/useBudgetService'
 
 import { useData } from '../../contexts/DataContext'
 
 const BudgetForm = () => {
-    const dataContext = useData()
-	const { refresh } = dataContext
+    const budgetService = useBudgetService()
+	const { refresh } = useData()
 
     const getCurrentMonthDates = () => {
         const now = new Date();

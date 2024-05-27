@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import budgetService from '../../apiservice/budgetService'
+import useBudgetService from '../../apiservice/useBudgetService'
 
 import { useData } from '../../contexts/DataContext'
 
 
 export const ProgressBar = ({ data }) => {
+	const budgetService = useBudgetService()
 	const { refresh } = useData()
+	
 	const [message, setMessage] = useState('')
 
 	const progress = (data.totalSpent / data.goal) * 100

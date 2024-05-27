@@ -1,8 +1,9 @@
 import React from 'react'
-import transactionService from '../../apiservice/transactionService'
+import useTransactionService from '../../apiservice/useTransactionService'
 import { useData } from '../../contexts/DataContext'
 
 const TransactionsTable = ({ data }) => {
+    const transactionService = useTransactionService()
     const { refresh } = useData()
     
     const handleDelete = async (id) => {
