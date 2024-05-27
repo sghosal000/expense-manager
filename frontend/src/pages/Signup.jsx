@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validatePassword } from "../utils/passwordValidation";
-import authService from "../apiservice/authService";
+import useAuthService from "../apiservice/useAuthService";
 
 const Signup = () => {
+    const { signup } = useAuthService()
+
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -45,15 +47,20 @@ const Signup = () => {
         const { confirmPassword, ...userData } = formData
 
         try {
-            const { status, error } = await authService.signup(userData); // Destructure response for status
-            if (status) {
+            const response = await signup(userData)
+            if (response.status) {
                 navigate("/login");
-            } else {
-                setMessage(error.response.data.message);
             }
         } catch (error) {
-            console.error(error);
-            setMessage("Signup failed. Please try again.");
+            // console.error(error);
+            if (!error.response) {
+                setMessage('No Server response')
+            } else if (error.response.status === 400) {
+                setMessage(error.response.data.message)
+            } else {
+                setMessage("Login failed. Try again...");
+            }
+            setMessage(error.response.data.message);
         } finally {
             setFormData({
                 username: "",
@@ -184,7 +191,7 @@ const Signup = () => {
                     </button>
                     <p className="mt-6 text-center text-sm text-txt-depressed">
                         Already have an account?{' '}
-                        <a href="#" className="font-semibold leading-6 text-accent hover:text-sky-600">Login</a>
+                        <a href="/login" className="font-semibold leading-6 text-accent hover:text-sky-600">Login</a>
                     </p>
                 </form>
             </div>

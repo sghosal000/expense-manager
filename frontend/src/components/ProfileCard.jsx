@@ -49,7 +49,7 @@ const ProfileCard = ({ user, totalTransaction, transactionsByCategory }) => {
 			<div className='w-full p-2 rounded-lg highlight-white'>
 				<p className='font-semibold'>You mostly spent in</p>
 				<div className='flex space-x-2 justify-between pt-4'>
-					<div className='w-1/3 flex flex-col justify-between text-left'>
+					<div className='w-1/3 flex flex-col justify-between text-sm text-left'>
 						{
 							transactionsByCategory && transactionsByCategory.map((transaction, index) => (
 								<p key={index}>{index + 1}. {transaction[0]}</p>

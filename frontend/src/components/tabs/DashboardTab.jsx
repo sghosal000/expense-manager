@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import authService from '../../apiservice/authService'
-import transactionService from '../../apiservice/transactionService'
+import useAuthService from '../../apiservice/useAuthService'
+import useTransactionService from '../../apiservice/useTransactionService'
 import LoadingDashboard from "../loading/LoadingDashboard"
 import ProfileCard from '../ProfileCard'
 import TransactionsTable from '../tables/TransactionsTable'
@@ -9,7 +9,9 @@ import { useData } from '../../contexts/DataContext'
 
 
 const DashboardTab = () => {
+    const { getDetails } = useAuthService()
     const { activeTab, trigger } = useData()
+    const transactionService = useTransactionService()
 
     const [user, setUser] = useState({})
     const [transactions, setTransactions] = useState([])
@@ -24,7 +26,7 @@ const DashboardTab = () => {
         setLoading(true)
 
         try {
-            const resUser = await authService.getDetails()
+            const resUser = await getDetails()
             const resTransaction = await transactionService.getTransactions("")
             const resTransactionsForMonth = await transactionService.getTransactionsForMonth("income", "")
             const resTotalTransaction = await transactionService.getTotalTransactionsForMonth("")

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import transactionService from '../../apiservice/transactionService'
+import useTransactionService from '../../apiservice/useTransactionService'
 import TransactionForm from '../forms/TransactionsForm'
 import TransactionsTable from '../tables/TransactionsTable'
 import LineChart from '../charts/LineChart'
@@ -8,6 +8,8 @@ import DoughnutChart from '../charts/PieChart'
 import { useData } from '../../contexts/DataContext'
 
 const TransactionsTab = ({ type }) => {
+	const transactionService = useTransactionService()
+	
 	const { activeTab, trigger } = useData()
 
 	const [transactions, setTransactions] = useState([])

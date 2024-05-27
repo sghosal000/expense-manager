@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import budgetService from '../../apiservice/budgetService'
+import useBudgetService from '../../apiservice/useBudgetService'
 import BudgetForm from '../forms/BudgetForm'
 import { ProgressBar } from '../charts/ProgressBar'
 
 import { useData } from '../../contexts/DataContext'
 
 const BudgetTab = () => {
+	const budgetService = useBudgetService()
+	
 	const dataContext = useData()
 	const { activeTab, trigger } = dataContext
 
