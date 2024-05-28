@@ -11,10 +11,10 @@ import useRefreshToken from '../hooks/useRefreshToken';
 
 const Dashboard = () => {
     const { activeTab } = useData()
-    const refresh = useRefreshToken()
-    useEffect(() => {
-        refresh()
-    }, [activeTab])
+    // const refresh = useRefreshToken()
+    // useEffect(() => {
+    //     refresh()
+    // }, [activeTab])
 
     const tabs = [
         { name: 'Dashboard', link: '#' },

@@ -32,9 +32,14 @@ const useAuthService = () => {
         }
     }
 
-    const logout = () => {
-        setUser('')
-        setAccessToken('')
+    const logout = async () => {
+        try {
+            const res = await axios.get(`/auth/logout`, { withCredentials: true })
+            setUser('')
+            setAccessToken('')
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const getDetails = async () => {

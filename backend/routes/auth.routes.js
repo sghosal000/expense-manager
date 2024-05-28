@@ -13,7 +13,7 @@ const authRouter = express.Router()
 
 authRouter.post('/signup', signup)
 authRouter.post('/login', login)
-authRouter.post('/logout', logout)
+authRouter.get('/logout', logout)
 authRouter.get('/details', getUser(), getDetails)
 authRouter.get('/refreshToken', refreshToken)
 
