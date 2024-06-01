@@ -6,7 +6,7 @@ export default function PrivateRoute() {
     const location = useLocation()
 
     return (
-        user?.username? <Outlet />
-        : <Navigate to={"/login"} state={{from: location}} replace={true} />
+            user?.username? <Outlet />
+            : <Navigate to={"/login"} state={{from: location}} replace={true} />
     )
 }

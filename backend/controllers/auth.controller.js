@@ -235,7 +235,11 @@ const refreshToken = async (req, res) => {
                 foundUser.refreshTokens = [...newRefreshTokens, newRefreshToken]
                 await foundUser.save()
 
-                res.status(200).json({ message: "access key refreshed", newAccessToken })
+                const userData = {
+                    username: foundUser.username,
+                    fname: foundUser.fname,
+                }
+                res.status(200).json({ message: "access key refreshed", newAccessToken, user: userData })
             })
     } catch (error) {
         console.log(error);
