@@ -41,13 +41,18 @@ const ProfileCard = ({ user, totalTransaction, transactionsByCategory }) => {
 					</div>
 				</div>
 				{
-					savings>0?
-					<p className='text-left text-light-green text-sm'>You are saving {savings} this month</p>
-					: <p className='text-left text-light-red text-sm'>You are spending {Math.abs(savings)} more than income this month</p>
+					savings === 0 ?
+						<p className='text-txt-depressed text-sm'>Your wallet looks empty this month...</p>
+						: savings > 0 ?
+							<p className='text-light-green text-sm'>You are saving {savings} this month</p>
+							: <p className='text-light-red text-sm'>You are spending {Math.abs(savings)} more than income this month</p>
 				}
 			</div>
 			<div className='w-full p-2 rounded-lg highlight-white'>
-				<p className='font-semibold'>You mostly spent in</p>
+				<p className='font-semibold'>You mostly spent in:</p>
+				{
+					transactionsByCategory.length === 0 && <p className='text-txt-depressed text-sm'>Add some transactions to see stats...</p>
+				}
 				<div className='flex space-x-2 justify-between pt-4'>
 					<div className='w-1/3 flex flex-col justify-between text-sm text-left'>
 						{

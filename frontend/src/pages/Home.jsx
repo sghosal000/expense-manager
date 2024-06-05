@@ -1,16 +1,16 @@
 import React from 'react';
 
-const Home = (loggedin) => {
+const Home = () => {
   return (
-    <div className="flex flex-col items-center justify-center background text-txt pt-5">
+    <div className="flex flex-col items-center justify-center background text-txt pt-20">
       {/* Header */}
       <header className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Trackit</h1>
-        <p className="text-lg text-txt-depressed mb-8">Simplify your financial tracking with ease</p>
+        <h1 className="text-2xl md:text-4xl font-bold mb-4">Welcome to Trackit</h1>
+        <p className="md:text-lg text-txt-depressed mb-8">Simplify your financial tracking with ease</p>
       </header>
       
       {/* Features Section */}
-      <section className="flex flex-col md:flex-row items-center justify-center bg-base shadow-lg rounded-lg p-8 max-w-4xl w-full mt-8">
+      <section className="flex flex-col md:flex-row items-center justify-center bg-base shadow-lg rounded-lg p-8 max-w-4xl w-5/6">
         {/* Feature 1: Income Tracking */}
         <div className="flex flex-col items-center justify-center mb-8 md:mb-0 md:mr-8">
           <img src="https://www.svgrepo.com/show/522612/money-receive.svg" alt="Income Icon" className="w-24 h-24 mb-4 invert" />
@@ -42,8 +42,8 @@ const Home = (loggedin) => {
       
       {/* Call-to-Action Section */}
       <section className="text-center mt-12">
-        <h2 className="text-2xl font-semibold mb-4">Ready to take control of your finances?</h2>
-        <p className="text-lg text-txt-depressed mb-8">Sign up now and start tracking your income, expenses, investments, and more.</p>
+        <h2 className="text-xl md:text-2xl font-semibold mb-4">Ready to take control of your finances?</h2>
+        <p className="md:text-lg text-txt-depressed mb-8">Sign up now and start tracking your income, expenses, investments, and more.</p>
       </section>
     </div>
   );

@@ -47,9 +47,9 @@ const Login = () => {
 
     return (
         <div className="background content-center lg:px-8 text-txt">
-            <div className="w-4/5 mx-auto lg:max-w-lg">
+            <div className="w-5/6 mx-auto lg:max-w-lg">
                 <form
-                    className="space-y-6 p-10 rounded-lg shadow-2xl highlight-white bg-base"
+                    className="space-y-6 p-4 md:p-10 rounded-lg shadow-2xl highlight-white bg-base"
                     onSubmit={handleSubmit}
                 >
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">

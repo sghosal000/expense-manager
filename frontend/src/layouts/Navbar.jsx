@@ -14,14 +14,14 @@ const Navbar = () => {
 
 			{!user?
 				<ul className="flex">
-					<li className="px-2 py-1 rounded-lg text-txt-depressed font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="/login">Login</Link></li>
-					<li className="px-2 py-1 rounded-lg text-txt-depressed font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="/signup">Signup</Link></li>
+					<li className="px-2 py-1 rounded-lg text-txt-depressed text-sm md:text-lg font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="/login">Login</Link></li>
+					<li className="px-2 py-1 rounded-lg text-txt-depressed text-sm md:text-lg font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="/signup">Signup</Link></li>
 					{/* <li className="px-2 py-1 rounded-lg text-txt-depressed font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="/dashboard">Dashboard</Link></li> */}
 				</ul> :
 				<ul className="flex">
-					<li className="px-2 py-1 rounded-lg text-txt-depressed font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="#">Hello, {user.fname}</Link></li>
-					<li className="px-2 py-1 rounded-lg text-txt-depressed font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="/dashboard">Dashboard</Link></li>
-					<li className="px-2 py-1 rounded-lg text-txt-depressed font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all" onClick={() => logout()}>Logout</li>
+					<li className="px-2 py-1 rounded-lg text-txt-depressed text-sm md:text-lg font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="#">Hello, {user.fname}</Link></li>
+					<li className="px-2 py-1 rounded-lg text-txt-depressed text-sm md:text-lg font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all"><Link to="/dashboard">Dashboard</Link></li>
+					<li className="px-2 py-1 rounded-lg text-txt-depressed text-sm md:text-lg font-medium hover:text-accent hover:bg-base hover:highlight-white cursor-pointer transition-all" onClick={() => logout()}>Logout</li>
 				</ul>
 			}
 		</nav>

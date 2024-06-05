@@ -57,7 +57,7 @@ export default function LineChart({ data }) {
 				borderColor: "rgb(75, 192, 192)",
 				borderWidth: 1,
 				radius: 1,
-				// tension: 0.3,
+				tension: 0.3,
 			},
 		],
 	};

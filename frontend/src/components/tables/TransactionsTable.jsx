@@ -20,14 +20,14 @@ const TransactionsTable = ({ data }) => {
 
     return (
         <div className="bg-base highlight-white rounded-lg overflow-x-auto">
-            <table className="max-h-80 min-w-full flex flex-col text-sm text-center">
+            <table className="max-h-80 min-w-full flex flex-col text-xs md:text-sm text-center">
                 <thead className='w-full bg-neutral'>
                     <tr className='flex justify-between'>
                         <th className="table-data w-3/12 text-left">Category</th>
                         <th className="table-data w-2/12">Date</th>
                         <th className="table-data w-2/12">Amount</th>
                         {/* <th className="table-data">Note</th> */}
-                        <th className="table-data w-2/12">Is Recurring</th>
+                        <th className="table-data w-2/12">Recurring</th>
                         <th className="table-data w-2/12"></th>
                     </tr>
                 </thead>

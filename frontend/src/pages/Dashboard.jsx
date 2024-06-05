@@ -47,7 +47,7 @@ const Dashboard = () => {
     return (
         <div className="flex flex-col items-center gap-y-2 py-4 background text-txt">
             <TabNavigation tabs={tabs} />
-            <div className="w-4/5 text-center">
+            <div className="w-5/6 md:w-4/5 text-center">
                 {render(activeTab)}
             </div>
         </div>

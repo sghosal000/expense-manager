@@ -6,8 +6,8 @@ const ProgressBarCircular = ({ data }) => {
     // const expense = 45
     // const investment = 20
     const { income, expense, investment } = data
-    const expensePercentage = parseFloat(((expense / income) * 100).toFixed(1))
-    const investmentPercentage = parseFloat(((investment / income) * 100).toFixed(1))
+    const expensePercentage = parseFloat(((expense / income) * 100).toFixed(1)) || 0
+    const investmentPercentage = parseFloat(((investment / income) * 100).toFixed(1)) || 0
 
     const width = 150
     const radius = 70;
@@ -33,7 +33,8 @@ const ProgressBarCircular = ({ data }) => {
                     strokeDasharray={circumference}
                     strokeDashoffset={investmentOffset}
                     strokeWidth='5'
-                    className='fill-none stroke-lime-500/70'
+                    className='fill-none stroke-lime-500'
+                    strokeLinecap='round'
                     />
                 <circle
                     cx={width / 2}
@@ -43,6 +44,7 @@ const ProgressBarCircular = ({ data }) => {
                     strokeDashoffset={expenseOffset}
                     strokeWidth='5'
                     className='fill-none stroke-teal-500'
+                    strokeLinecap='round'
                 />
             </svg>
             <div className="absolute flex flex-col items-center justify-center text-xs">
